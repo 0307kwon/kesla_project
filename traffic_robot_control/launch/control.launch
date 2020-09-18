@@ -1,0 +1,9 @@
+<launch>
+
+
+  <node pkg="traffic_robot_control" name="traffic_robot_control" type="traffic_robot_control" output="screen">
+
+  </node>
+
+
+</launch>
