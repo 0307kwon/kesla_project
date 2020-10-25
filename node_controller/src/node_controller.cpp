@@ -9,9 +9,7 @@ int node_controller::mode = 0;
 enum MISSION_MODE{
   MODE_NONE,
   MODE_TRAFFIC_SIGN,
-  MODE_INTERSECTION,
-  MODE_PARKING,
-  MODE_TUNNEL
+  MODE_EXPLORATION,
 };
 
 
@@ -25,8 +23,9 @@ void node_controller::modeCallback(const kesla_msg::KeslaMsg::ConstPtr& msg){
       node_admin.init();
       node_admin.roslaunch("traffic_robot_control","control.launch");
       node_admin.roslaunch("opencv","opencv.launch");
-    }else if(mode == MODE_INTERSECTION){
+    }else if(mode == MODE_EXPLORATION){
       node_admin.init();
+      node_admin.roslaunch("turtlebot3_slam","turtlebot3_slam.launch","slam_methods:=frontier_exploration");
       //node_admin.roslaunch("camera_to_world","camera.launch");
     }
   }

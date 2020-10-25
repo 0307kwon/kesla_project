@@ -53,7 +53,26 @@ int cpp_roslaunch::roslaunch(const char* node_name,const char* launch_name){ // 
     std::cout << node.name << " 실행 완료" << std::endl;
     return 1;
   }
+}
 
+int cpp_roslaunch::roslaunch(const char* node_name,const char* launch_name,const char* option){ //roslaunch의 추가적인 인자 버전//
+  Node node;
+  node.name = node_name;
+  node.pid = fork();
+
+  nodes.push_back(node);
+
+  if(node.pid == -1) { //-1 이면 fork생성 에러
+		std::cout << "can't fork error" << std::endl;
+		return 0;
+	}
+
+	if(node.pid == 0) { //0이면 자식 프로세스
+    execlp("roslaunch","roslaunch",node_name,launch_name,option,NULL);
+  }else{ // 부모 프로세스
+    std::cout << node.name << " 실행 완료" << std::endl;
+    return 1;
+  }
 }
 
 void cpp_roslaunch::init(){ // 모든 노드를 종료하고 초기 상태로 되돌립니다.

@@ -5,11 +5,9 @@
 #include <sstream>
 
 enum MISSION_MODE{
-  MODE_NONE,          //assigned 0
-  MODE_TRAFFIC_SIGN,  //assigned 1
-  MODE_INTERSECTION,  //assigned 2
-  MODE_PARKING,       //assigned 3
-  MODE_TUNNEL         //assigned 4
+  MODE_NONE,
+  MODE_TRAFFIC_SIGN,
+  MODE_EXPLORATION,
 };
 
 
@@ -19,8 +17,8 @@ void msgCallback(const kesla_msg::KeslaMsg::ConstPtr& msg, int* mode){
   if(msg->data.compare("traffic_sign") == 0){
     (*mode) = MODE_TRAFFIC_SIGN;
   }
-  else if(msg->data.compare("intersection") == 0){
-    (*mode) = MODE_INTERSECTION;
+  else if(msg->data.compare("exploration") == 0){
+    (*mode) = MODE_EXPLORATION;
   }
   else{
     (*mode) = MODE_NONE;

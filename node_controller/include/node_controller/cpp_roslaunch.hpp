@@ -21,6 +21,7 @@ public:
 
   cpp_roslaunch();
   int roslaunch(const char* node_name,const char* launch_name);
+  int roslaunch(const char* node_name,const char* launch_name,const char* option);
   int kill_node(const char* node_name);
   void mychild(int sig);
   void init();
