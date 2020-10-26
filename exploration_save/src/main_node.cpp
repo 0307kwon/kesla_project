@@ -24,18 +24,15 @@ void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
   std::cout << "z:" << msg->pose.pose.position.z << std::endl;
 
 }
-
-
 int main(int argc, char** argv){
 
   ros::init(argc, argv, "exploration_save");
 
   ros::NodeHandle n;
   ros::ServiceServer client = n.advertiseService("explore_server/sendExplorDone",srv_callback);
-  ROS_INFO("Be ready");
   ros::Subscriber sub = n.subscribe<nav_msgs::Odometry>("/odom",10,msgCallback);
   ros::spin();
+  //
 
   return 0;
-
 }
