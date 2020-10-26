@@ -15,15 +15,12 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
   return true;
 }
 
-
 int main(int argc, char** argv){
 
-  ros::init(argc,argv,"main_node");
-
+  ros::init(argc,argv,"exploration_save");
   ros::NodeHandle n;
   ros::ServiceServer client = n.advertiseService("explore_server/sendExplorDone",srv_callback);
   ROS_INFO("Be ready");
   ros::spin();
-
   return 0;
 }
