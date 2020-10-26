@@ -3,6 +3,7 @@
 #include <kesla_msg/DoneService.h>
 #include <string>
 
+
 using namespace std;
 bool srv_callback(kesla_msg::DoneService::Request &req,
                   kesla_msg::DoneService::Response &res)
@@ -17,7 +18,10 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
 }
 
 void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
+
   std::cout << "x:" << msg->pose.pose.position.x << std::endl;
+  std::cout << "y:" << msg->pose.pose.position.y << std::endl;
+  std::cout << "z:" << msg->pose.pose.position.z << std::endl;
 
 }
 
