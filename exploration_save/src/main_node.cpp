@@ -26,9 +26,9 @@ int main(int argc, char** argv){
 
   ros::NodeHandle n;
   ros::ServiceServer client = n.advertiseService("explore_server/sendExplorDone",srv_callback);
-  ROS_INFO("Be ready");
   ros::Subscriber sub = n.subscribe<nav_msgs::Odometry>("/odom",10,msgCallback);
   ros::spin();
-  return 0;
 
+
+  return 0;
 }
