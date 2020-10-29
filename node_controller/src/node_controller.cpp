@@ -58,10 +58,6 @@ node_controller::node_controller(int argc, char** argv){
     rate.sleep();
   }
 
-
-
-
-
   std::cout << "실행 완료" << std::endl;
 
 }
