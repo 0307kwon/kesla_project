@@ -26,6 +26,7 @@ void node_controller::modeCallback(const kesla_msg::KeslaMsg::ConstPtr& msg){
     }else if(mode == MODE_EXPLORATION){
       node_admin.init();
       node_admin.roslaunch("turtlebot3_slam","turtlebot3_slam.launch","slam_methods:=frontier_exploration");
+      node_admin.roslaunch("exploration_save","exploration_save.launch");
       //node_admin.roslaunch("camera_to_world","camera.launch");
     }
   }
