@@ -77,14 +77,11 @@ mode_decider::mode_decider(int argc, char** argv){
 
 
   while (nh.ok()) {
-    ros::Rate rate2(5.0);
     ros::Time Present_Time;
     if(mymode == before_mymode){
       last_Time = ros::Time::now();
-        std::cout << "메세지 입력 대기중..." << '\n';
     }else if(mymode != before_mymode){
-    Present_Time = ros::Time::now();
-    std::cout << Present_Time - last_Time << std::endl;
+      Present_Time = ros::Time::now();
       if(Present_Time - last_Time < ros::Duration(3.0)){
         std::cout << "msg : " << mymode << std::endl;    // data 메시지를 표시한다
         std::stringstream temp;

@@ -2,6 +2,8 @@
 #include <node_controller/node_controller.hpp>
 #include <cstring>
 
+using namespace std;
+
 //static 변수 초기화//
 cpp_roslaunch node_controller::node_admin;
 int node_controller::mode = 0;
@@ -44,15 +46,22 @@ node_controller::node_controller(int argc, char** argv){
   ros::Rate rate(20.0);
 
   kesla_msg::KeslaMsg msg;
+  ros::Time beforeTime = ros::Time::now();
+
+  while(beforeTime == ros::Time(0)){ // 확실한 beforeTime을 받아오기 위해
+    beforeTime = ros::Time::now();
+  }
 
   while(nh.ok()){
-
+    /*
     msg.stamp = ros::Time::now();
     msg.data = "so tired";
-
     pub.publish(msg);
-
-    std::cout << "node_controller 동작중" << std::endl;
+    */
+    if(ros::Time::now() - beforeTime > ros::Duration(3) && beforeTime != ros::Time(0)) {
+      beforeTime = ros::Time::now();
+      std::cout << "node_controller 동작중" << std::endl;
+    }
 
     ros::spinOnce();
     rate.sleep();
