@@ -7,9 +7,6 @@
 #include <fstream>
 #include <sstream>
 
-#define MAX_SIZE 1000
-char inputString[MAX_SIZE];
-
 using namespace std;
 
 
@@ -30,14 +27,16 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
   cout << req.myRequest <<endl;
   if(!req.myRequest.compare("finished")){
     res.myResponse = "finished success";
+    ROS_ERROR("탐색 종료");
     //텍스트 파일 저장//
   }else if(!req.myRequest.compare("excuted")){
     res.myResponse = "excuted success";
-    sendClickedPoint(-10,10);
-    sendClickedPoint(10,10);
-    sendClickedPoint(10,-10);
-    sendClickedPoint(-10,-10);
-    sendClickedPoint(-10,10);
+    float scale = 10;
+    sendClickedPoint(-scale,scale);
+    sendClickedPoint(scale,scale);
+    sendClickedPoint(scale,-scale);
+    sendClickedPoint(-scale,-scale);
+    sendClickedPoint(-scale,scale);
     sendClickedPoint(0,0);
   }else{
     res.myResponse = "fail";
@@ -63,12 +62,8 @@ void sendClickedPoint(float x, float y){
 
 void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
 //nav_msgs 토픽의 Odometry 메세지를 받음.
-  std::cout << "x:" << msg->pose.pose.position.x << std::endl;
-  std::cout << "y:" << msg->pose.pose.position.y << std::endl;
-  std::cout << "z:" << msg->pose.pose.position.z << std::endl;
   stringstream ss;
   ss << "odom_start:"<< msg->pose.pose.position.x << "," << msg->pose.pose.position.y << std::endl;
-
   makeTextfile(ss.str().c_str());
 }
 
