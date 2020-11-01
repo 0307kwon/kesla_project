@@ -11,6 +11,7 @@ enum MISSION_MODE{
   ODOM_START,
   ODOM_STAY,
   ODOM_FINISH,
+  FINISH,
 };
 
 using namespace std;
@@ -18,7 +19,7 @@ using namespace std;
 
 //전역 변수
 ros::Publisher pubClickedPoint;
-int condition;
+int condition = 0;
 //
 bool srv_callback(kesla_msg::DoneService::Request &req,
                   kesla_msg::DoneService::Response &res);
@@ -32,9 +33,10 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
 {
   cout << req.myRequest <<endl;
   if(!req.myRequest.compare("finished")){
-    condition = 3;
+    condition = 2;
     res.myResponse = "finished success";
     ROS_ERROR("탐색 종료");
+    condition = 3;
     //텍스트 파일 저장//
   }else if(!req.myRequest.compare("excuted")){
     res.myResponse = "excuted success";
@@ -72,14 +74,13 @@ void sendClickedPoint(float x, float y){
 void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
 //nav_msgs 토픽의 Odometry 메세지를 받음.
   stringstream ss;
-  condition = 1;
   if(condition == ODOM_START){
     std::cout << "x:" << msg->pose.pose.position.x << std::endl;
     std::cout << "y:" << msg->pose.pose.position.y << std::endl;
     std::cout << "z:" << msg->pose.pose.position.z << std::endl;
     ss << "odom_start:" << msg->pose.pose.position.x << "," << msg->pose.pose.position.y << std::endl;
     makeTextfile(ss.str().c_str());
-    condition = 2;
+    condition = 1;
   }else if(condition == ODOM_FINISH){
     std::cout << "x:" << msg->pose.pose.position.x << std::endl;
     std::cout << "y:" << msg->pose.pose.position.y << std::endl;
@@ -87,9 +88,11 @@ void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
     ss << "odom_finish:" << msg->pose.pose.position.x << "," << msg->pose.pose.position.y << std::endl;
     ss << "quaternion_finish:" << msg->pose.pose.orientation.w << "," << msg->pose.pose.orientation.x << "," << msg->pose.pose.orientation.y << "," << msg->pose.pose.orientation.z << std::endl;
     makeTextfile(ss.str().c_str());
-    condition = 2;
+    condition = 1;
+  }else if(condition == FINISH){
+    //mode_decider에 종료메세지+txt파일 전달.//
   }else{
-    condition = 2;
+    condition = 1;
   }
 }
 
