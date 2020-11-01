@@ -37,10 +37,8 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
     sendClickedPoint(10,10);
     sendClickedPoint(10,-10);
     sendClickedPoint(-10,-10);
-    /*
     sendClickedPoint(-10,10);
     sendClickedPoint(0,0);
-    */
   }else{
     res.myResponse = "fail";
   }
@@ -61,7 +59,6 @@ void sendClickedPoint(float x, float y){
   msg.header.frame_id = "map";
   msg.point.x = x; msg.point.y = y; msg.point.z = 0;
   pubClickedPoint.publish(msg);
-  cout<< "보내는중" << endl;
 }
 
 void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
@@ -82,7 +79,7 @@ int main(int argc, char** argv){
   ros::NodeHandle n;
   //service
   ros::ServiceServer clientDone = n.advertiseService("explore_server/sendExplorDone",srv_callback);
-  ros::ServiceServer clientExcuted = n.advertiseService("explore_client/sendExplorExcuted",srv_callback);
+  ros::ServiceServer clientExcuted = n.advertiseService("explore_server/sendExplorExcuted",srv_callback);
   //subscriber
   ros::Subscriber sub = n.subscribe<nav_msgs::Odometry>("/odom",10,msgCallback);
   //Publisher

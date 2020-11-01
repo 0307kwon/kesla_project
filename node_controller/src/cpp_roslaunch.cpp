@@ -22,7 +22,6 @@ void cpp_roslaunch::mychild(int sig){ // 좀비 child 제거 함수 (시그널 �
     }
   }
 //
-
 }
 
 cpp_roslaunch::cpp_roslaunch(){
