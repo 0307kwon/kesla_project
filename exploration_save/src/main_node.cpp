@@ -29,6 +29,7 @@ void makeTextfile(const char* myString){
   outFile << myString << endl;
 
   outFile.close();
+  //
 }
 
 
