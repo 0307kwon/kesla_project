@@ -1,0 +1,10 @@
+<launch>
+
+
+  <node pkg="exploration_save" name="exploration_save" type="exploration_save" output="screen">
+  </node>
+  <!--
+  <include file="$(find node_controller)/launch/node_controller.launch">
+  </include>
+-->
+</launch>
