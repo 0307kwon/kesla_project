@@ -7,17 +7,23 @@
 #include <fstream>
 #include <sstream>
 
+enum MISSION_MODE{
+  ODOM_START,
+  ODOM_STAY,
+  ODOM_FINISH,
+};
+
 using namespace std;
 
 
 //전역 변수
 ros::Publisher pubClickedPoint;
+int condition;
 //
-
-
 bool srv_callback(kesla_msg::DoneService::Request &req,
                   kesla_msg::DoneService::Response &res);
 void makeTextfile(const char* myString);
+
 void sendClickedPoint(float x, float y);
 void msgCallback(const nav_msgs::Odometry::ConstPtr& msg);
 
@@ -26,6 +32,7 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
 {
   cout << req.myRequest <<endl;
   if(!req.myRequest.compare("finished")){
+    condition = 3;
     res.myResponse = "finished success";
     ROS_ERROR("탐색 종료");
     //텍스트 파일 저장//
@@ -46,7 +53,7 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
 
 void makeTextfile(const char* myString){
   //myString의 변수를 file의 한 줄에 추가//
-  ofstream outFile("odom_start.txt");
+  ofstream outFile("../catkin_ws/src/kesla_project/exploration_save/txtfile/odom_start.txt");
   outFile << myString << endl;
 
   outFile.close();
@@ -60,11 +67,30 @@ void sendClickedPoint(float x, float y){
   pubClickedPoint.publish(msg);
 }
 
+
+
 void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
 //nav_msgs 토픽의 Odometry 메세지를 받음.
   stringstream ss;
-  ss << "odom_start:"<< msg->pose.pose.position.x << "," << msg->pose.pose.position.y << std::endl;
-  makeTextfile(ss.str().c_str());
+  condition = 1;
+  if(condition == ODOM_START){
+    std::cout << "x:" << msg->pose.pose.position.x << std::endl;
+    std::cout << "y:" << msg->pose.pose.position.y << std::endl;
+    std::cout << "z:" << msg->pose.pose.position.z << std::endl;
+    ss << "odom_start:" << msg->pose.pose.position.x << "," << msg->pose.pose.position.y << std::endl;
+    makeTextfile(ss.str().c_str());
+    condition = 2;
+  }else if(condition == ODOM_FINISH){
+    std::cout << "x:" << msg->pose.pose.position.x << std::endl;
+    std::cout << "y:" << msg->pose.pose.position.y << std::endl;
+    std::cout << "z:" << msg->pose.pose.position.z << std::endl;
+    ss << "odom_finish:" << msg->pose.pose.position.x << "," << msg->pose.pose.position.y << std::endl;
+    ss << "quaternion_finish:" << msg->pose.pose.orientation.w << "," << msg->pose.pose.orientation.x << "," << msg->pose.pose.orientation.y << "," << msg->pose.pose.orientation.z << std::endl;
+    makeTextfile(ss.str().c_str());
+    condition = 2;
+  }else{
+    condition = 2;
+  }
 }
 
 int main(int argc, char** argv){
