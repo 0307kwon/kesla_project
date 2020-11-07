@@ -1,4 +1,4 @@
-# kesla_project ( 현재 업데이트 중입니다. )
+# kesla_project ( 지속 업데이트 중입니다. )
 [2020.03~] 졸업프로젝트 - 붕괴 위기가 있는 건물에서의 조난자 탐색 로봇
 
 # 1. summary
@@ -34,6 +34,15 @@
  
 # 5. Code 
 ## 1. [mode_decider.cpp](./mode_decider/src/mode_decider.cpp)
+들어온 모드 메세지를 확인하고 해당 모드로 바꿔도 문제가 없을 시 모드를 갱신합니다.  
+(현재는 모드 메세지가 들어오면 해당 모드로 바로 변경합니다.)  
+
 
 ## 2. [node_controller.cpp](./node_controller/src/node_controller.cpp)
+바뀐 모드가 필요로 하는 ros 패키지들을 실행시킵니다. launch 파일을 실행시키는 것이 원칙입니다.  
+### 2-1 [cpp_roslaunch.cpp](./node_controller/src/cpp_roslaunch.cpp)
+코드로 roslaunch 명령을 실행하는 소스입니다.
+
+
+
 
