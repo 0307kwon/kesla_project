@@ -7,16 +7,16 @@
 건물 내를 꼼꼼히 탐색하고 조난자가 있는 위치를 맵에 표시하여  
 인명 구조 작업을 위한 정보 습득을 위해 사용한다.  
 
-#2. 상황 설정
+# 2. 상황 설정
 1. lane tracking : 도로가 건물까지 이어져 있고 터틀봇은 도로를 따라 건물까지 도달한다.
 2. exploration : 건물에 진입해 건물의 map 정보를 모두 얻을 수 있을 때까지 탐색한다.
 3. recognition : 사람을 인식해 map에 표시한다.
 4. navigation : 2~3 과정이 모두 끝나면 건물을 탈출한다.
 
-#3. 하드웨어 setting
-1. 로봇 : turtlebot3 burger
+# 3. 하드웨어 setting
+* 로봇 : turtlebot3 burger
   * computing resource : nvidia jetson nano (터틀봇에 장착)
   * camera : 라즈베리파이용 webcam
-2. commander 
+* commander 
   * computing resource : notebook
   
