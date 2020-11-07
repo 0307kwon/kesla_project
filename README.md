@@ -16,10 +16,18 @@
 ★장성광
 
 # 1. summary
-붕괴 위기가 있는 건물에서 사람이 직접 들어가는 것은 위험부담이 매우 크다.  
-이를 해결하기 위해 사람을 인식할 수 있는 로봇을 대신 진입시켜  
-건물 내를 꼼꼼히 탐색하고 조난자가 있는 위치를 맵에 표시하여  
-인명 구조 작업을 위한 정보 습득을 위해 사용한다.  
+붕괴 위기가 있는 건물에서 사람이 직접 들어가는 것은 위험부담이 매우 크다.
+
+
+이를 해결하기 위해 사람을 인식할 수 있는 로봇을 대신 진입시켜
+
+
+건물 내를 꼼꼼히 탐색하고 조난자가 있는 위치를 맵에 표시하여
+
+
+인명 구조 작업을 위한 정보 습득을 위해 사용한다.
+
+
 
 # 2. 상황 설정
 1. lane tracking : 도로가 건물까지 이어져 있고 터틀봇은 도로를 따라 건물까지 도달한다.
@@ -37,41 +45,93 @@
 
 # 3. 하드웨어 setting
 * 로봇 : turtlebot3 burger
+
+
   * computing resource : nvidia jetson nano (터틀봇에 장착)
+  
+  
   * camera : 라즈베리파이용 webcam
+  
+  
 * commander 
+
+
   * computing resource : notebook
+  
+  
   
 # 4. 구조 
 현재 필요한 mode를 받아와 해당 mode에 맞는 프로그램(Ros 패키지)을 실행시킵니다.
 <img src="./image01.png" width=800px>  
-## mode에 해당하는 ros 실행 패키지들 ( 계속 업데이트 됩니다. )  
-* MODE_NONE : 아무런 동작을 하지 않습니다.  
-* MODE_TRAFFIC_SIGN : 도로를 따라가는 모드  
-  * traffic_robot_control/control.launch - by 장성광,정원석,김정환,권세진 
+
+
+## mode에 해당하는 ros 실행 패키지들 ( 계속 업데이트 됩니다. )
+
+
+* MODE_NONE : 아무런 동작을 하지 않습니다.
+
+
+* MODE_TRAFFIC_SIGN : 도로를 따라가는 모드
+
+
+  * traffic_robot_control/control.launch - by 장성광,정원석,김정환,권세진
+  
+  
   * opencv/opencv.launch - by 정원석
-* MODE_EXPLORATION : 건물 탐색 모드  
-  * turtlebot3_slam/turtlebot3_slam.launch - [라이브러리](https://github.com/ROBOTIS-GIT/turtlebot3) 
-  * exploration_save/exploration_save.launch - by 권세진, 장성광  
+  
+  
+* MODE_EXPLORATION : 건물 탐색 모드
+
+
+  * turtlebot3_slam/turtlebot3_slam.launch - [라이브러리](https://github.com/ROBOTIS-GIT/turtlebot3)
+  
+  
+  * exploration_save/exploration_save.launch - by 권세진, 장성광
+  
+  
  
 # 5. Code 
 ## 1. [mode_decider.cpp](./mode_decider/src/mode_decider.cpp) - by 장성광, 권세진
-들어온 모드 메세지를 확인하고 해당 모드로 바꿔도 문제가 없을 시 모드를 갱신합니다.  
-(현재는 모드 메세지가 들어오면 해당 모드로 바로 변경합니다.)  
+들어온 모드 메세지를 확인하고 해당 모드로 바꿔도 문제가 없을 시 모드를 갱신합니다.
+
+
+(현재는 모드 메세지가 들어오면 해당 모드로 바로 변경합니다.)
+
+
 
 
 ## 2. [node_controller.cpp](./node_controller/src/node_controller.cpp) - by 장성광, 권세진
-바뀐 모드가 필요로 하는 ros 패키지들을 실행시킵니다. launch 파일을 실행시키는 것이 원칙입니다.  
+바뀐 모드가 필요로 하는 ros 패키지들을 실행시킵니다. launch 파일을 실행시키는 것이 원칙입니다.
+
+
 ### 2-1 [cpp_roslaunch.cpp](./node_controller/src/cpp_roslaunch.cpp) - by 권세진
-코드로 roslaunch 명령을 실행하는 소스입니다.  
-1. void cpp_roslaunch::init()  
-cpp_roslaunch.cpp에 의해 실행된 모든 ros 패키지를 강제 종료시킵니다.  
-2. int cpp_roslaunch::kill_node(const char* node_name)  
-실행중인 패키지 중에 (node_name) 이름을 가진 패키지를 강제 종료합니다.    
-3. int cpp_roslaunch::roslaunch(const char* node_name,const char* launch_name)  
-(node_name) 이라는 패키지의 (launch_name) 파일을 roslaunch로 실행시킵니다.   
-4. void cpp_roslaunch::mychild(int sig)  
-예기치않게 종료되지 않고 남아있는 패키지들을 제거합니다.  
+코드로 roslaunch 명령을 실행하는 소스입니다.
+
+
+1. void cpp_roslaunch::init()
+
+
+cpp_roslaunch.cpp에 의해 실행된 모든 ros 패키지를 강제 종료시킵니다.
+
+
+2. int cpp_roslaunch::kill_node(const char* node_name)
+
+
+실행중인 패키지 중에 (node_name) 이름을 가진 패키지를 강제 종료합니다.
+
+
+3. int cpp_roslaunch::roslaunch(const char* node_name,const char* launch_name)
+
+
+(node_name) 이라는 패키지의 (launch_name) 파일을 roslaunch로 실행시킵니다.
+
+
+4. void cpp_roslaunch::mychild(int sig)
+
+
+예기치않게 종료되지 않고 남아있는 패키지들을 제거합니다.
+
+
 
 
 # 6. Result
