@@ -22,8 +22,8 @@
   
 # 4. 구조 
 현재 필요한 mode를 받아와 해당 mode에 맞는 프로그램(Ros 패키지)을 실행시킵니다.
-<img src="./image01.png" width=800px>
-● mode에 해당하는 ros 실행 패키지들 ( 계속 업데이트 됩니다. )
+<img src="./image01.png" width=800px>  
+● mode에 해당하는 ros 실행 패키지들 ( 계속 업데이트 됩니다. )  
 * MODE_NONE : 아무런 동작을 하지 않습니다.  
 * MODE_TRAFFIC_SIGN : 도로를 따라가는 모드  
   * traffic_robot_control/control.launch  
