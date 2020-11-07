@@ -26,21 +26,21 @@
 ## mode에 해당하는 ros 실행 패키지들 ( 계속 업데이트 됩니다. )  
 * MODE_NONE : 아무런 동작을 하지 않습니다.  
 * MODE_TRAFFIC_SIGN : 도로를 따라가는 모드  
-  * traffic_robot_control/control.launch  
-  * opencv/opencv.launch  
+  * traffic_robot_control/control.launch - by 장성광,정원석,김정환,권세진 
+  * opencv/opencv.launch - by 정원석
 * MODE_EXPLORATION : 건물 탐색 모드  
-  * turtlebot3_slam/turtlebot3_slam.launch  
-  * exploration_save/exploration_save.launch  
+  * turtlebot3_slam/turtlebot3_slam.launch - [라이브러리](https://github.com/ROBOTIS-GIT/turtlebot3) 
+  * exploration_save/exploration_save.launch - by 권세진, 장성광  
  
 # 5. Code 
-## 1. [mode_decider.cpp](./mode_decider/src/mode_decider.cpp)
+## 1. [mode_decider.cpp](./mode_decider/src/mode_decider.cpp) - by 장성광, 권세진
 들어온 모드 메세지를 확인하고 해당 모드로 바꿔도 문제가 없을 시 모드를 갱신합니다.  
 (현재는 모드 메세지가 들어오면 해당 모드로 바로 변경합니다.)  
 
 
-## 2. [node_controller.cpp](./node_controller/src/node_controller.cpp)
+## 2. [node_controller.cpp](./node_controller/src/node_controller.cpp) - by 장성광, 권세진
 바뀐 모드가 필요로 하는 ros 패키지들을 실행시킵니다. launch 파일을 실행시키는 것이 원칙입니다.  
-### 2-1 [cpp_roslaunch.cpp](./node_controller/src/cpp_roslaunch.cpp)
+### 2-1 [cpp_roslaunch.cpp](./node_controller/src/cpp_roslaunch.cpp) - by 권세진
 코드로 roslaunch 명령을 실행하는 소스입니다.  
 1. void cpp_roslaunch::init()  
 cpp_roslaunch.cpp에 의해 실행된 모든 ros 패키지를 강제 종료시킵니다.  
