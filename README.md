@@ -111,25 +111,25 @@
 1. void cpp_roslaunch::init()
 
 
-  cpp_roslaunch.cpp에 의해 실행된 모든 ros 패키지를 강제 종료시킵니다.
+      cpp_roslaunch.cpp에 의해 실행된 모든 ros 패키지를 강제 종료시킵니다.
 
 
 2. int cpp_roslaunch::kill_node(const char* node_name)
 
 
-  실행중인 패키지 중에 (node_name) 이름을 가진 패키지를 강제 종료합니다.
+      실행중인 패키지 중에 (node_name) 이름을 가진 패키지를 강제 종료합니다.
 
 
 3. int cpp_roslaunch::roslaunch(const char* node_name,const char* launch_name)
 
 
-  (node_name) 이라는 패키지의 (launch_name) 파일을 roslaunch로 실행시킵니다.
+      (node_name) 이라는 패키지의 (launch_name) 파일을 roslaunch로 실행시킵니다.
 
 
 4. void cpp_roslaunch::mychild(int sig)
 
 
-  예기치않게 종료되지 않고 남아있는 패키지들을 제거합니다.
+    예기치않게 종료되지 않고 남아있는 패키지들을 제거합니다.
 
 
 
