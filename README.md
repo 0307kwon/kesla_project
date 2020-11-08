@@ -79,6 +79,8 @@
   
   * opencv/opencv.launch - by 정원석
   
+  <img src="./image02.png" width=800px>
+  
   
 * MODE_EXPLORATION : 건물 탐색 모드
 
@@ -87,6 +89,9 @@
   
   
   * exploration_save/exploration_save.launch - by 권세진, 장성광
+  
+  
+  <img src="./image03.png" width=800px>
   
   
  
