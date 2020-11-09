@@ -29,7 +29,9 @@
 
 # 1. summary
 
-<img src="./image04.gif" width=500px>  
+<img src="./image04.gif" width=500px>
+
+▲ 4개의 방을 모두 둘러보는 터틀봇 [2020-11-08]
 
 붕괴 위기가 있는 건물에서 사람이 직접 들어가는 것은 위험부담이 매우 크다.
 
@@ -150,6 +152,17 @@
 
 
     예기치않게 종료되지 않고 남아있는 패키지들을 제거합니다.
+    
+   
+# 6. 진행 상황
+
+<details>
+<summary>[2020-11-08] 건물의 방을 모두 exploration</summary>
+       
+<img src="image04.gif" width=500px>
+
+</details>
+
 
 
 
