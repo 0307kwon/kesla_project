@@ -28,6 +28,9 @@
 5. [Code](https://github.com/0307kwon/kesla_project#5-code)
 
 # 1. summary
+
+<img src="./image04.gif" width=500px>  
+
 붕괴 위기가 있는 건물에서 사람이 직접 들어가는 것은 위험부담이 매우 크다.
 
 
