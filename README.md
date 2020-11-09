@@ -27,6 +27,8 @@
 
 5. [Code](https://github.com/0307kwon/kesla_project#5-code)
 
+6. [진행 상황](https://github.com/0307kwon/kesla_project#6-%EC%A7%84%ED%96%89-%EC%83%81%ED%99%A9)
+
 # 1. summary
 
 <img src="./image04.gif" width=500px>
