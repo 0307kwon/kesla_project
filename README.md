@@ -60,7 +60,7 @@
   
   
   
-# 4. 구조 
+# 4. Code 구조 
 현재 필요한 mode를 받아와 해당 mode에 맞는 프로그램(Ros 패키지)을 실행시킵니다.
 <img src="./image01.png" width=800px>  
 
