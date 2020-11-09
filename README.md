@@ -15,6 +15,18 @@
 
 ★장성광
 
+# 0. index
+
+1. [summary](https://github.com/0307kwon/kesla_project#1-summary)
+
+2. [상황 설정](https://github.com/0307kwon/kesla_project#2-%EC%83%81%ED%99%A9-%EC%84%A4%EC%A0%95)
+
+3. [하드웨어 setting](https://github.com/0307kwon/kesla_project#3-%ED%95%98%EB%93%9C%EC%9B%A8%EC%96%B4-setting)
+
+4. [Code 구조](https://github.com/0307kwon/kesla_project#4-code-%EA%B5%AC%EC%A1%B0)
+
+5. [Code](https://github.com/0307kwon/kesla_project#5-code)
+
 # 1. summary
 붕괴 위기가 있는 건물에서 사람이 직접 들어가는 것은 위험부담이 매우 크다.
 
@@ -135,13 +147,6 @@
 
 
     예기치않게 종료되지 않고 남아있는 패키지들을 제거합니다.
-
-
-
-
-# 6. Result
-
-
 
 
 
