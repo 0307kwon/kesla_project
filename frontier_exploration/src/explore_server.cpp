@@ -171,7 +171,7 @@ private:
 
             }else{ //if no frontier found, check if search is successful
                 ROS_DEBUG("Couldn't find a frontier");
-
+                std::cout << "-----------------" << retry_ << "------" << success_ << std::endl;
                 //search is succesful
                 if(retry_ == 0 && success_){
                     ROS_WARN("Finished exploring room");

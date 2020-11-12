@@ -31,12 +31,20 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
     //텍스트 파일 저장//
   }else if(!req.myRequest.compare("excuted")){
     res.myResponse = "excuted success";
-    float scale = 10;
-    sendClickedPoint(-scale,scale);
-    sendClickedPoint(scale,scale);
-    sendClickedPoint(scale,-scale);
-    sendClickedPoint(-scale,-scale);
-    sendClickedPoint(-scale,scale);
+    float scale = 0.9;
+    /*
+    sendClickedPoint(-0.1,scale-0.45);
+    sendClickedPoint(scale*2,scale-0.45);
+    sendClickedPoint(scale*2,-scale-0.45);
+    sendClickedPoint(-0.1,-scale-0.45);
+    sendClickedPoint(-0.1,scale-0.45);
+    sendClickedPoint(0,0);
+    */
+    sendClickedPoint(-scale*2,scale*2);
+    sendClickedPoint(scale*2,scale*2);
+    sendClickedPoint(scale*2,-scale);
+    sendClickedPoint(-scale*2,-scale);
+    sendClickedPoint(-scale*2,scale*2);
     sendClickedPoint(0,0);
   }else{
     res.myResponse = "fail";
