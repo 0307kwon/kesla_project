@@ -27,9 +27,9 @@ class Gray():
 
 
 	if self.selecting_sub_image == "compressed":
-            self._sub = rospy.Subscriber('/camera/image/compressed', CompressedImage, self.callback, queue_size=1)
+            self._sub = rospy.Subscriber('/main_camera/image_raw', CompressedImage, self.callback, queue_size=1)
         else:
-            self._sub = rospy.Subscriber('/camera/image', Image, self.callback, queue_size=1)
+            self._sub = rospy.Subscriber('/main_camera/image_raw', Image, self.callback, queue_size=1)
 
         self.bridge = CvBridge()
 

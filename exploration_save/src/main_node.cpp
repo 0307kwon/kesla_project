@@ -32,6 +32,7 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
   }else if(!req.myRequest.compare("excuted")){
     res.myResponse = "excuted success";
     float scale = 0.9;
+
     /*
     sendClickedPoint(-0.1,scale-0.45);
     sendClickedPoint(scale*2,scale-0.45);
@@ -40,6 +41,7 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
     sendClickedPoint(-0.1,scale-0.45);
     sendClickedPoint(0,0);
     */
+    //
     sendClickedPoint(-scale*2,scale*2);
     sendClickedPoint(scale*2,scale*2);
     sendClickedPoint(scale*2,-scale);

@@ -66,6 +66,7 @@ int cpp_roslaunch::roslaunch(const char* node_name,const char* launch_name,const
 		return 0;
 	}
 
+
 	if(node.pid == 0) { //0이면 자식 프로세스
     execlp("roslaunch","roslaunch",node_name,launch_name,option,NULL);
   }else{ // 부모 프로세스
