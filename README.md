@@ -99,7 +99,6 @@
   <p></p>
   <details>
   <summary> opencv/opencv.launch - by 정원석 </summary>
-  
   1. 카메라로부터 이미지를 받아온다
   2. 이미지중 밑 부분만 잘라 사용 (차선이 잘 보이는)
   3. 노란색만 인식
@@ -108,7 +107,6 @@
   4. 노란색만 인식된 이미지를 cv2.threshold, cv2.GaussianBlur, cv2.Canny를 통해 가공
   5. cv2.HoughLinesP를 사용하여 파라미터 조정을 통해 차선 정보를 받아온다
   6. 왼쪽 오른쪽 선을 구분하고 기울기를 받아와 차선 정보를 controller.launch로 넘겨준다
-  
   </details>
   
   <img src="./image02.png" width=800px>
@@ -120,6 +118,7 @@
   <summary> turtlebot3_slam/turtlebot3_slam.launch - [라이브러리](https://github.com/ROBOTIS-GIT/turtlebot3) </summary>
  
   </details>
+  
   <p></p>
   <details>
   <summary> exploration_save/exploration_save.launch - by 권세진, 장성광 </summary>
