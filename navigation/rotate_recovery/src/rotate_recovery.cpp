@@ -115,10 +115,30 @@ void RotateRecovery::runBehavior()
 
   bool got_180 = false;
 
+
+
+  //kesla customizing
+
+  double turtle_speed = 0.05;
+
+  ros::Time beforeTime;
+
+  while(beforeTime == ros::Time(0)){ // 확실한 beforeTime을 받아오기 위해
+    beforeTime = ros::Time::now();
+  }
+  //
+
   while (n.ok() &&
          (!got_180 ||
           std::fabs(angles::shortest_angular_distance(current_angle, start_angle)) > tolerance_))
   {
+    //kesla customizing
+    if(ros::Time::now() - beforeTime > ros::Duration(5)){ // 5초마다 동작중임을 알림
+      ROS_WARN("change turtlebot3 x_speed reverse");
+      beforeTime = ros::Time::now();
+      turtle_speed *= -1;
+    }
+
     // Update Current Angle
     local_costmap_->getRobotPose(global_pose);
     current_angle = tf::getYaw(global_pose.getRotation());
@@ -169,7 +189,7 @@ void RotateRecovery::runBehavior()
     vel = std::min(std::max(vel, min_rotational_vel_), max_rotational_vel_);
 
     geometry_msgs::Twist cmd_vel;
-    cmd_vel.linear.x = 0.0;
+    cmd_vel.linear.x = turtle_speed;
     cmd_vel.linear.y = 0.0;
     cmd_vel.angular.z = vel;
 
