@@ -232,11 +232,11 @@
  ```
 # 6. 진행 상황
 
-* 2020-11-08) 건물의 방을 모두 exploration
+### 2020-11-08) 건물의 방을 모두 exploration
        
 <img src="image04.gif" width=500px>
 
-* 2020-11-16) frontier exploration parameter를 수정하여 좀 더 부드러운 탐색을 구현
+### 2020-11-16) frontier exploration parameter를 수정하여 좀 더 부드러운 탐색을 구현
        
 <img src="image05.gif" width=500px>
 
