@@ -5,7 +5,6 @@
   </node>
   <node pkg="node_controller" name="node_controller" type="node_controller" output="screen">
   </node>
-
   <!--
   <include file="$(find node_controller)/launch/node_controller.launch">
   </include>
