@@ -136,6 +136,8 @@
  
   </details>
   
+  <img src="./image04.png" width=800px>
+  
 * MODE_NAVIGATION : 건물 탈출 모드
 
   <p></p>
@@ -143,6 +145,8 @@
   <summary> nav_control/nav_control.launch - by 권세진 </summary>
  
   </details>
+  
+  <img src="./image05.png" width=800px>
 
  
 # 5. Code 
