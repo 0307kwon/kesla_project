@@ -150,7 +150,7 @@
   <p></p>
   <details>
   <summary> exploration_save/exploration_save.launch - by 권세진, 장성광 </summary>
- <code>
+ 
     건물 내를 돌아다니며 얻은 유용한 정보를 기록하기 위한 노드입니다.
 
     구체적인 기능은 다음과 같습니다.
@@ -164,7 +164,6 @@
     3. 건물 탐색이 모두 완료되면 조난자 발견 지점이 표시된 맵을 이미지 파일로 저장합니다.
 
     4. 모든 동작이 종료되면 다음 모드를 mode_decider에 전달합니다.
-</code>
  
   </details>
   
@@ -192,13 +191,18 @@
  
     맵에서 현재 로봇이 위치한 지점이 어딘지 알고 있을 때, 목적지까지 경로를 안내해주는 패키지입니다.
 
-    저희 프로젝트에서는 exploration 모드에서 기록한 건물 입구 위치가 목적지로 설정됩니다.
+    nav_control.launch에 의해 목적지가 설정됩니다.
  
   </details>
 
   <p></p>
   <details>
   <summary> nav_control/nav_control.launch - by 권세진 </summary>
+ 
+ 
+     turtlebot3_navigation.launch에 목적지를 전달합니다.
+ 
+     저희 프로젝트에서는 exploration 모드에서 기록한 건물 입구 위치가 목적지로 설정됩니다.
  
   </details>
   
