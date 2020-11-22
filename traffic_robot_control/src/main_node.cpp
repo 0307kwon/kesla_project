@@ -4,6 +4,7 @@
 #include "geometry_msgs/Twist.h"
 #include <vector>
 #include <cmath>
+#include <kesla_msg/DoneService.h>
 
 using namespace std;
 

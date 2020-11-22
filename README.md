@@ -90,28 +90,59 @@
 
 
 * MODE_TRAFFIC_SIGN : 도로를 따라가는 모드
-
-  * traffic_robot_control/control.launch - by 장성광,정원석,김정환,권세진
+  <p></p>
+  <details>
+  <summary> traffic_robot_control/control.launch - by 장성광,정원석,김정환,권세진 </summary>
+ 
+  </details>
   
-  * opencv/opencv.launch - by 정원석
+  <p></p>
+  <details>
+  <summary> opencv/opencv.launch - by 정원석 </summary>
+  1. 카메라로부터 이미지를 받아온다
+  2. 이미지중 밑 부분만 잘라 사용 (차선이 잘 보이는)
+  3. 노란색만 인식
+      1. 이미지를 hsv로 컬러 변경
+      2. 노란색 영역만 표시( (20, 100, 10), (30, 255, 255) )
+  4. 노란색만 인식된 이미지를 cv2.threshold, cv2.GaussianBlur, cv2.Canny를 통해 가공
+  5. cv2.HoughLinesP를 사용하여 파라미터 조정을 통해 차선 정보를 받아온다
+  6. 왼쪽 오른쪽 선을 구분하고 기울기를 받아와 차선 정보를 controller.launch로 넘겨준다
+  </details>
   
   <img src="./image02.png" width=800px>
     
 * MODE_EXPLORATION : 건물 탐색 모드
 
-  * turtlebot3_slam/turtlebot3_slam.launch - [라이브러리](https://github.com/ROBOTIS-GIT/turtlebot3)
+  <p></p>
+  <details>
+  <summary> turtlebot3_slam/turtlebot3_slam.launch - [라이브러리](https://github.com/ROBOTIS-GIT/turtlebot3) </summary>
+ 
+  </details>
   
-  * exploration_save/exploration_save.launch - by 권세진, 장성광
+  <p></p>
+  <details>
+  <summary> exploration_save/exploration_save.launch - by 권세진, 장성광 </summary>
+ 
+  </details>
   
   <img src="./image03.png" width=800px>
   
 * MODE_MAP_SAVE : 건물 탐색이 모두 끝나고 생성된 맵을 savemap.yaml 파일로 저장하는 모드입니다.
 
-  * map_server/map_saver.launch - [라이브러리](http://wiki.ros.org/map_server)
+  <p></p>
+  <details>
+  <summary> map_server/map_saver.launch - [라이브러리](http://wiki.ros.org/map_server) </summary>
+ 
+  </details>
   
 * MODE_NAVIGATION : 건물 탈출 모드
 
-  * nav_control/nav_control.launch - by 권세진
+  <p></p>
+  <details>
+  <summary> nav_control/nav_control.launch - by 권세진 </summary>
+ 
+  </details>
+
  
 # 5. Code 
 ## 1. [mode_decider.cpp](./mode_decider/src/mode_decider.cpp) - by 장성광, 권세진
