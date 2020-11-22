@@ -93,7 +93,7 @@
   
   <p></p>
   <details>
-  <summary> opencv/opencv.launch - by 정원석 </summary>
+ <summary> <p style="color:red;">opencv/opencv.launch - by 정원석</p> </summary>
  
      #### 이미지에서 차선을 인식하기 위한 노드입니다.
  
