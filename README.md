@@ -235,6 +235,10 @@
        
 <img src="image04.gif" width=500px>
 
+### 2020-11-13) lane tracking 실제 테스트
+
+<img src="image06.gif" width=500px>
+
 ### 2020-11-16) frontier exploration parameter를 수정하여 좀 더 부드러운 탐색을 구현
        
 <img src="image05.gif" width=500px>
