@@ -80,6 +80,7 @@ void sendClickedPoint(float x, float y){
   msg.header.frame_id = "map";
   msg.point.x = x; msg.point.y = y; msg.point.z = 0;
   pubClickedPoint_ptr->publish(msg);
+  ROS_ERROR("kesla - sendClickedPoint");
 }
 
 

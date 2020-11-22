@@ -34,7 +34,6 @@
 #include "nav_msgs/GetMap.h"
 #include "tf2/LinearMath/Matrix3x3.h"
 #include "geometry_msgs/Quaternion.h"
-#include <kesla_msg/DoneService.h>
 
 using namespace std;
 
@@ -55,10 +54,6 @@ class MapGenerator
 
     void mapCallback(const nav_msgs::OccupancyGridConstPtr& map)
     {
-      ros::NodeHandle nh;
-      kesla_msg::DoneService req_map;
-      req_map.request.myRequest = "navigation";
-      clientMap = nh.serviceClient<kesla_msg::DoneService>("mode_decider/changeMode");
       ROS_INFO("Received a %d X %d map @ %.3f m/pix",
                map->info.width,
                map->info.height,
@@ -124,12 +119,10 @@ free_thresh: 0.196
 
       ROS_INFO("Done\n");
       saved_map_ = true;
-      clientMap.call(req_map);
     }
 
     std::string mapname_;
     ros::Subscriber map_sub_;
-    ros::ServiceClient clientMap;
     bool saved_map_;
     int threshold_occupied_;
     int threshold_free_;
@@ -220,3 +213,5 @@ int main(int argc, char** argv)
 
   return 0;
 }
+
+

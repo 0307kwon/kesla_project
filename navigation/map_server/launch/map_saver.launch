@@ -1,4 +1,8 @@
 <launch>
-  <node pkg="map_server" name="map_server" type="map_saver" args="-f /home/$(env USER)/catkin_ws/navigation_result/savemap" output="screen">
+
+
+  <node pkg="map_server" name="map_server" type="map_saver" args="-f /home/$(env USER)/navigation_result/savemap" output="screen">
   </node>
+
+
 </launch>
