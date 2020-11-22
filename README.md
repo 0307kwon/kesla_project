@@ -92,12 +92,10 @@
 * MODE_TRAFFIC_SIGN : 도로를 따라가는 모드
 
   * traffic_robot_control/control.launch - by 장성광,정원석,김정환,권세진
-  
-  * opencv/opencv.launch - by 정원석
-    <details>
-      <summary>자세히</summary>
- 
- OpenCV.launch
+  <details>
+ <summary>
+  * opencv/opencv.launch - by 정원석</summary>
+OpenCV.launch
   1. 카메라로부터 이미지를 받아온다
   2. 이미지중 밑 부분만 잘라 사용 (차선이 잘 보이는)
   3. 노란색만 인식
