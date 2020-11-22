@@ -190,7 +190,7 @@
   <summary> turtlebot3_navigation.launch - <a href="http://wiki.ros.org/turtlebot3_navigation">라이브러리<a> </summary>
  
  
-    ### 맵에서 현재 로봇이 위치한 지점이 어딘지 알고 있을 때, 목적지까지 경로를 안내해주는 패키지입니다.
+    ### 주변 맵 정보와 로봇의 현재 위치정보를 알고 있을 때, 목적지까지 경로를 안내해주는 패키지입니다.
 
     nav_control.launch에 의해 목적지가 설정됩니다.
  
