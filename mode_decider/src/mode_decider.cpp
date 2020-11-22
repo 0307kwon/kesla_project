@@ -77,9 +77,9 @@ mode_decider::mode_decider(int argc, char** argv){
   //Service
   kesla_msg::DoneService req_finish;    //req 메세지 선언
   kesla_msg::DoneService res_finish;
-  ros::ServiceClient clientNavDone = nh.serviceClient<kesla_msg::DoneService>("exploration_save/sendNavDone");
+  ros::ServiceClient clientNavDone = nh.serviceClient<kesla_msg::DoneService>("node_controller/changeMode");
   //boost::bind(msgCallback,_1,&mymode)
-  ros::ServiceServer serverNavDone = nh.advertiseService("exploration_save/sendNav", msgCallback);
+  ros::ServiceServer serverNavDone = nh.advertiseService("mode_decider/changeMode", msgCallback);
 
   /*
   if(!req_finish.myRequest.compare("navigation_finish")){

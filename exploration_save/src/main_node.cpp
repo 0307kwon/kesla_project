@@ -12,8 +12,8 @@ using namespace std;
 
 
 //전역 변수
-ros::NodeHandle n;
-ros::Publisher pubClickedPoint;
+ros::Publisher* pubClickedPoint_ptr;
+ros::ServiceClient* clientExplor_ptr;
 bool isFirst = false;
 //ros::ServiceClient clientMode = n.serviceClient<kesla_msg::DoneService>("explore_server/sendNav");
 //
@@ -34,8 +34,8 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
     //clientMode.call(req);
     //텍스트 파일 저장//
     kesla_msg::DoneService req_explor;
-    ros::ServiceClient clientExplor = n.serviceClient<kesla_msg::DoneService>("map_save");
-    clientExplor.call(req_explor);
+    req_explor.request.myRequest = "map_save";
+    clientExplor_ptr->call(req_explor);
 
   }else if(!req.myRequest.compare("excuted")){
     res.myResponse = "excuted success";
@@ -79,7 +79,7 @@ void sendClickedPoint(float x, float y){
   geometry_msgs::PointStamped msg;
   msg.header.frame_id = "map";
   msg.point.x = x; msg.point.y = y; msg.point.z = 0;
-  pubClickedPoint.publish(msg);
+  pubClickedPoint_ptr->publish(msg);
 }
 
 
@@ -109,16 +109,18 @@ void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
 int main(int argc, char** argv){
 
   ros::init(argc, argv, "exploration_save");
-
+  ros::NodeHandle n;
 
   //service
   ros::ServiceServer clientDone = n.advertiseService("explore_server/sendExplorDone",srv_callback);
   ros::ServiceServer clientExcuted = n.advertiseService("explore_server/sendExplorExcuted",srv_callback);
-
+  ros::ServiceClient clientExplor = n.serviceClient<kesla_msg::DoneService>("mode_decider/changeMode");
+  clientExplor_ptr = &clientExplor;
   //subscriber
   ros::Subscriber sub = n.subscribe<nav_msgs::Odometry>("/odom",10,msgCallback);
   //Publisher
-  pubClickedPoint = n.advertise<geometry_msgs::PointStamped>("/clicked_point",10);
+  ros::Publisher pubClickedPoint = n.advertise<geometry_msgs::PointStamped>("/clicked_point",10);
+  pubClickedPoint_ptr = &pubClickedPoint;
 
   ros::Rate rate(20.0);
   ros::Time beforeTime;
