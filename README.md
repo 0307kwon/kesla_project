@@ -116,7 +116,7 @@
 
   <p></p>
   <details>
-  <summary> turtlebot3_slam/turtlebot3_slam.launch - <a href="https://github.com/ROBOTIS-GIT/turtlebot3">라이브러리]</a> </summary>
+  <summary> turtlebot3_slam/turtlebot3_slam.launch - <a href="https://github.com/ROBOTIS-GIT/turtlebot3">라이브러리</a> </summary>
  
   </details>
   
