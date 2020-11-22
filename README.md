@@ -95,6 +95,8 @@
   <details>
   <summary> opencv/opencv.launch - by 정원석 </summary>
  
+     ### 이미지에서 차선을 인식하기 위한 노드입니다.
+ 
      1. 카메라로부터 이미지를 받아온다
 
      2. 이미지중 밑 부분만 잘라 사용 (차선이 잘 보이는)
@@ -117,9 +119,7 @@
   <details>
   <summary> traffic_robot_control/control.launch - by 장성광,정원석,김정환,권세진 </summary>
  
- 
- 
-    opencv.launch로부터 받아온 차선의 정보를 활용하여 터틀봇이 도로를 따라갈 수 있도록 제어합니다.
+    ### opencv.launch로부터 받아온 차선의 정보를 활용하여 터틀봇이 도로를 따라갈 수 있도록 제어합니다.
 
     차선의 기울기와 위치 정보를 기반으로 터틀봇의 회전속도와 전진속도를 결정합니다.
  
@@ -135,7 +135,7 @@
   
   
   
-    <a href="http://wiki.ros.org/frontier_exploration">frontier exploration<a> 패키지를 이용하여 건물 내부를 모두 탐색합니다.
+    ### [frontier exploration](http://wiki.ros.org/frontier_exploration) 패키지를 이용하여 건물 내부를 모두 탐색합니다.
   
   </details>
   
@@ -152,7 +152,7 @@
   <summary> exploration_save/exploration_save.launch - by 권세진, 장성광 </summary>
  
  
-    건물 내를 돌아다니며 얻은 유용한 정보를 기록하기 위한 노드입니다.
+    ### 건물 내를 돌아다니며 얻은 유용한 정보를 기록하기 위한 노드입니다.
 
     구체적인 기능은 다음과 같습니다.
 
@@ -177,9 +177,8 @@
   <details>
   <summary> map_server/map_saver.launch - <a href="http://wiki.ros.org/map_server">라이브러리<a> </summary>
    
+   ### 만들어진 맵을 savemap.yaml 파일과 savemap.pgm 파일로 저장합니다.
    
-   
-     만들어진 맵을 savemap.yaml 파일과 savemap.pgm 파일로 저장합니다.
   </details>
   
   <img src="./image04.png" width=800px>
@@ -191,7 +190,7 @@
   <summary> turtlebot3_navigation.launch - <a href="http://wiki.ros.org/turtlebot3_navigation">라이브러리<a> </summary>
  
  
-    맵에서 현재 로봇이 위치한 지점이 어딘지 알고 있을 때, 목적지까지 경로를 안내해주는 패키지입니다.
+    ### 맵에서 현재 로봇이 위치한 지점이 어딘지 알고 있을 때, 목적지까지 경로를 안내해주는 패키지입니다.
 
     nav_control.launch에 의해 목적지가 설정됩니다.
  
@@ -202,7 +201,7 @@
   <summary> nav_control/nav_control.launch - by 권세진 </summary>
  
  
-     turtlebot3_navigation.launch에 목적지를 전달합니다.
+     ### turtlebot3_navigation.launch에 목적지를 전달합니다.
  
      저희 프로젝트에서는 exploration 모드에서 기록한 건물 입구 위치가 목적지로 설정됩니다.
  
