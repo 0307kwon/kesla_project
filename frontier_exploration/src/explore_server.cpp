@@ -57,7 +57,7 @@ public:
         if(sendExplorExcuted.call(kesla_srv)){
           std::cout << "kesla - 실행 완료 메세지 전송완료" << std::endl;
         }else{
-          ROS_ERROR("fail");
+          ROS_ERROR("kesla - excute fail");
         }
 
     }

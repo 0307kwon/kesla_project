@@ -15,13 +15,15 @@ using namespace std;
 ros::Publisher* pubClickedPoint_ptr;
 ros::ServiceClient* clientExplor_ptr;
 bool isFirst = false;
+stringstream save_ss;
+string txtSave_path_;
+nav_msgs::Odometry turtle_pose;
 //ros::ServiceClient clientMode = n.serviceClient<kesla_msg::DoneService>("explore_server/sendNav");
 //
 
 
 bool srv_callback(kesla_msg::DoneService::Request &req,
                   kesla_msg::DoneService::Response &res);
-void makeTextfile(const char* myString);
 void sendClickedPoint(float x, float y);
 void msgCallback(const nav_msgs::Odometry::ConstPtr& msg);
 
@@ -30,9 +32,19 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
                   kesla_msg::DoneService::Response &res){
   cout << req.myRequest <<endl;
   if(!req.myRequest.compare("finished")){
-    ROS_ERROR("탐색 종료");
+    ROS_ERROR("exploration finished");
     //clientMode.call(req);
     //텍스트 파일 저장//
+    save_ss << "end_position "<< turtle_pose.pose.pose.position.x << " " << turtle_pose.pose.pose.position.y << std::endl;
+    save_ss << "end_quaternion " << turtle_pose.pose.pose.orientation.x << " " << turtle_pose.pose.pose.orientation.y << " "
+                              << turtle_pose.pose.pose.orientation.z << " " << turtle_pose.pose.pose.orientation.w << std::endl;
+    ofstream outFile(txtSave_path_.c_str());
+    cout<< "이름" << txtSave_path_ << endl;
+    if(outFile.is_open()){
+      outFile << save_ss.str();
+      outFile.close();
+    }
+    //다음 모드로 이동//
     kesla_msg::DoneService req_explor;
     req_explor.request.myRequest = "map_save";
     clientExplor_ptr->call(req_explor);
@@ -64,17 +76,6 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
   return true;
 }
 
-
-void makeTextfile(const char* myString){
-  //
-  //myString의 변수를 file의 한 줄에 추가//
-  ofstream outFile("navigation_result/log.txt");
-  outFile << myString << endl;
-
-  outFile.close();
-}
-
-
 void sendClickedPoint(float x, float y){
   geometry_msgs::PointStamped msg;
   msg.header.frame_id = "map";
@@ -84,36 +85,31 @@ void sendClickedPoint(float x, float y){
 }
 
 
-void msgCallbackStart(const nav_msgs::Odometry::ConstPtr& msg){
-  //시작 지점 위치를 한 번만 받기 위한 함수
-  stringstream ss;
-  ss << "start_position "<< msg->pose.pose.position.x << " " << msg->pose.pose.position.y << std::endl;
-  ss << "start_quaternion " << msg->pose.pose.orientation.x << " " << msg->pose.pose.orientation.y << " "
-                            << msg->pose.pose.orientation.z << " " << msg->pose.pose.orientation.w << std::endl;
-}
-
-
 void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
 //nav_msgs 토픽의 Odometry 메세지를 받음.
+  turtle_pose.pose.pose.position.x = msg->pose.pose.position.x;
+  turtle_pose.pose.pose.position.y = msg->pose.pose.position.y;
+  turtle_pose.pose.pose.position.z = msg->pose.pose.position.z;
+  turtle_pose.pose.pose.orientation.x = msg->pose.pose.orientation.x;
+  turtle_pose.pose.pose.orientation.y = msg->pose.pose.orientation.y;
+  turtle_pose.pose.pose.orientation.z = msg->pose.pose.orientation.z;
+  turtle_pose.pose.pose.orientation.w = msg->pose.pose.orientation.w;
+
   if(!isFirst){
-    msgCallbackStart(msg);
+    save_ss << "start_position "<< turtle_pose.pose.pose.position.x << " " << turtle_pose.pose.pose.position.y << std::endl;
+    save_ss << "start_quaternion " << turtle_pose.pose.pose.orientation.x << " " << turtle_pose.pose.pose.orientation.y << " "
+                              << turtle_pose.pose.pose.orientation.z << " " << turtle_pose.pose.pose.orientation.w << std::endl;
     isFirst = true;
   }
-  stringstream ss;
-  ss << "end_position "<< msg->pose.pose.position.x << " " << msg->pose.pose.position.y << std::endl;
-  ss << "end_quaternion " << msg->pose.pose.orientation.x << " " << msg->pose.pose.orientation.y << " "
-                            << msg->pose.pose.orientation.z << " " << msg->pose.pose.orientation.w << std::endl;
-  makeTextfile(ss.str().c_str());
 }
 
 
 int main(int argc, char** argv){
 
-
-
   ros::init(argc, argv, "exploration_save");
   ros::NodeHandle n;
 
+  n.param<string>("exploration_save/txtSave_path", txtSave_path_, "");
   //service
   ros::ServiceServer clientDone = n.advertiseService("explore_server/sendExplorDone",srv_callback);
   ros::ServiceServer clientExcuted = n.advertiseService("explore_server/sendExplorExcuted",srv_callback);
