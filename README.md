@@ -105,7 +105,7 @@
   
   <img src="./image03.png" width=800px>
   
-* MODE_MAP_SAVE : 건물 탐색이 모두 끝나고 생성된 map을 저장하는 모드입니다.
+* MODE_MAP_SAVE : 건물 탐색이 모두 끝나고 생성된 맵을 savemap.yaml 파일로 저장하는 모드입니다.
 
   * map_server/map_saver.launch - [라이브러리](http://wiki.ros.org/map_server)
   
