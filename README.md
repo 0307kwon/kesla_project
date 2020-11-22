@@ -94,6 +94,12 @@
   * traffic_robot_control/control.launch - by 장성광,정원석,김정환,권세진
   
   * opencv/opencv.launch - by 정원석
+  <details>
+    <summary>자세히</summary>
+
+<!-- summary 아래 한칸 공백 두고 내용 삽입 -->
+
+</details>
   
   <img src="./image02.png" width=800px>
     
