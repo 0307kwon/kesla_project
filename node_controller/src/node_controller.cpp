@@ -17,7 +17,7 @@ enum MISSION_MODE{
   MODE_NAVIGATION,
 };
 
-bool node_controller::modeCallback(kesla_msg::DoneService::Request &req,kesla_msg::DoneService::Response &res){
+bool node_controller::modeCallback(kesla_msg::DoneService::Request &req, kesla_msg::DoneService::Response &res){
   std::cout << "mode :" << req.myRequest << std::endl;
   const char* received_mode = req.myRequest.c_str();
 
