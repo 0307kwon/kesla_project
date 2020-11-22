@@ -90,9 +90,13 @@
 
 
 * MODE_TRAFFIC_SIGN : 도로를 따라가는 모드
-
-  * traffic_robot_control/control.launch - by 장성광,정원석,김정환,권세진
+  <p></p>
+  <details>
+  <summary> traffic_robot_control/control.launch - by 장성광,정원석,김정환,권세진 </summary>
+ 
+  </details>
   
+  <p></p>
   <details>
   <summary> opencv/opencv.launch - by 정원석 </summary>
   
@@ -111,19 +115,35 @@
     
 * MODE_EXPLORATION : 건물 탐색 모드
 
-  * turtlebot3_slam/turtlebot3_slam.launch - [라이브러리](https://github.com/ROBOTIS-GIT/turtlebot3)
-  
-  * exploration_save/exploration_save.launch - by 권세진, 장성광
+  <p></p>
+  <details>
+  <summary> turtlebot3_slam/turtlebot3_slam.launch - [라이브러리](https://github.com/ROBOTIS-GIT/turtlebot3) </summary>
+ 
+  </details>
+  <p></p>
+  <details>
+  <summary> exploration_save/exploration_save.launch - by 권세진, 장성광 </summary>
+ 
+  </details>
   
   <img src="./image03.png" width=800px>
   
 * MODE_MAP_SAVE : 건물 탐색이 모두 끝나고 생성된 맵을 savemap.yaml 파일로 저장하는 모드입니다.
 
-  * map_server/map_saver.launch - [라이브러리](http://wiki.ros.org/map_server)
+  <p></p>
+  <details>
+  <summary> map_server/map_saver.launch - [라이브러리](http://wiki.ros.org/map_server) </summary>
+ 
+  </details>
   
 * MODE_NAVIGATION : 건물 탈출 모드
 
-  * nav_control/nav_control.launch - by 권세진
+  <p></p>
+  <details>
+  <summary> nav_control/nav_control.launch - by 권세진 </summary>
+ 
+  </details>
+
  
 # 5. Code 
 ## 1. [mode_decider.cpp](./mode_decider/src/mode_decider.cpp) - by 장성광, 권세진
