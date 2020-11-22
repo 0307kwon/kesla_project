@@ -57,7 +57,8 @@ class MapGenerator
     {
       ros::NodeHandle nh;
       kesla_msg::DoneService req_map;
-      clientMap = nh.serviceClient<kesla_msg::DoneService>("mapSave");
+      req_map.request.myRequest = "navigation";
+      clientMap = nh.serviceClient<kesla_msg::DoneService>("mode_decider/changeMode");
       ROS_INFO("Received a %d X %d map @ %.3f m/pix",
                map->info.width,
                map->info.height,

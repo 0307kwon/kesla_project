@@ -48,8 +48,8 @@ node_controller::node_controller(int argc, char** argv){
 
   kesla_msg::DoneService req_finish;    //req 메세지 선언
   kesla_msg::DoneService res_finish;
-  ros::ServiceClient clientNavDone = nh.serviceClient<kesla_msg::DoneService>("exploration_save/sendNavMode");
-  ros::ServiceServer serverNavDone = nh.advertiseService("exploration_save/sendNavDone", modeCallback);
+
+  ros::ServiceServer serverNavDone = nh.advertiseService("node_controller/changeMode", modeCallback);
 /*-------------------------------------------------------------------------------------
   ros::Publisher pub = nh.advertise<kesla_msg::KeslaMsg>("KeslaMsg_kwon",10);
   ros::Subscriber sub = nh.subscribe("/kesla/mode", 10, node_controller::modeCallback);
