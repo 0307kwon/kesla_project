@@ -10,7 +10,6 @@
  
 ◎ Embedded System
 
-
 ★권세진
 
 ★장성광
@@ -92,37 +91,33 @@
 
 * MODE_TRAFFIC_SIGN : 도로를 따라가는 모드
 
-
   * traffic_robot_control/control.launch - by 장성광,정원석,김정환,권세진
-  
   
   * opencv/opencv.launch - by 정원석
   
   <img src="./image02.png" width=800px>
-  
-  
+    
 * MODE_EXPLORATION : 건물 탐색 모드
-
 
   * turtlebot3_slam/turtlebot3_slam.launch - [라이브러리](https://github.com/ROBOTIS-GIT/turtlebot3)
   
-  
   * exploration_save/exploration_save.launch - by 권세진, 장성광
-  
   
   <img src="./image03.png" width=800px>
   
+* MODE_MAP_SAVE : 건물 탐색이 모두 끝나고 생성된 map을 저장하는 모드입니다.
+
+  * map_server/map_saver.launch - [라이브러리](http://wiki.ros.org/map_server)
   
+* MODE_NAVIGATION : 건물 탈출 모드
+
+  * nav_control/nav_control.launch - by 권세진
  
 # 5. Code 
 ## 1. [mode_decider.cpp](./mode_decider/src/mode_decider.cpp) - by 장성광, 권세진
 들어온 모드 메세지를 확인하고 해당 모드로 바꿔도 문제가 없을 시 모드를 갱신합니다.
 
-
 (현재는 모드 메세지가 들어오면 해당 모드로 바로 변경합니다.)
-
-
-
 
 ## 2. [node_controller.cpp](./node_controller/src/node_controller.cpp) - by 장성광, 권세진
 바뀐 모드가 필요로 하는 ros 패키지들을 실행시킵니다. launch 파일을 실행시키는 것이 원칙입니다.
@@ -130,32 +125,30 @@
 
 ### 2-1 [cpp_roslaunch.cpp](./node_controller/src/cpp_roslaunch.cpp) - by 권세진
 코드로 roslaunch 명령을 실행하는 소스입니다.
+```txt
+   1. void cpp_roslaunch::init()
 
 
-1. void cpp_roslaunch::init()
+         cpp_roslaunch.cpp에 의해 실행된 모든 ros 패키지를 강제 종료시킵니다.
 
 
-      cpp_roslaunch.cpp에 의해 실행된 모든 ros 패키지를 강제 종료시킵니다.
+   2. int cpp_roslaunch::kill_node(const char* node_name)
 
 
-2. int cpp_roslaunch::kill_node(const char* node_name)
+         실행중인 패키지 중에 (node_name) 이름을 가진 패키지를 강제 종료합니다.
 
 
-      실행중인 패키지 중에 (node_name) 이름을 가진 패키지를 강제 종료합니다.
+   3. int cpp_roslaunch::roslaunch(const char* node_name,const char* launch_name)
 
 
-3. int cpp_roslaunch::roslaunch(const char* node_name,const char* launch_name)
+         (node_name) 이라는 패키지의 (launch_name) 파일을 roslaunch로 실행시킵니다.
 
 
-      (node_name) 이라는 패키지의 (launch_name) 파일을 roslaunch로 실행시킵니다.
+   4. void cpp_roslaunch::mychild(int sig)
 
 
-4. void cpp_roslaunch::mychild(int sig)
-
-
-    예기치않게 종료되지 않고 남아있는 패키지들을 제거합니다.
-    
-   
+       예기치않게 종료되지 않고 남아있는 패키지들을 제거합니다.
+ ```
 # 6. 진행 상황
 
 <details>
