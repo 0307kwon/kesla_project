@@ -42,7 +42,7 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
     sendClickedPoint(-0.1,scale-0.45);
     sendClickedPoint(0,0);
     */
-    
+
     //가제보용
     sendClickedPoint(-scale*2,scale*2);
     sendClickedPoint(scale*2,scale*2);
