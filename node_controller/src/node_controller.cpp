@@ -17,7 +17,7 @@ enum MISSION_MODE{
   MODE_NAVIGATION,
 };
 
-bool node_controller::modeCallback(kesla_msg::DoneService::Request &req,kesla_msg::DoneService::Response &res){
+bool node_controller::modeCallback(kesla_msg::DoneService::Request &req, kesla_msg::DoneService::Response &res){
   std::cout << "mode :" << req.myRequest << std::endl;
   const char* received_mode = req.myRequest.c_str();
 
@@ -45,9 +45,6 @@ node_controller::node_controller(int argc, char** argv){
   ros::init(argc,argv,"node_controller");
 
   ros::NodeHandle nh;
-
-  kesla_msg::DoneService req_finish;    //req 메세지 선언
-  kesla_msg::DoneService res_finish;
 
   ros::ServiceServer serverNavDone = nh.advertiseService("node_controller/changeMode", modeCallback);
 /*-------------------------------------------------------------------------------------
