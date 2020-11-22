@@ -141,8 +141,10 @@
   <details>
   <summary> person_filtering.launch - by 정원석 </summary>
  
+      YOLO로부터 object인식 정보를 받아와 그 중 의미있는 정보(사람)만 필터링하여
+      
+      exploration_save.launch 노드에 전달합니다.
   
- 
   </details>
   
   <p></p>
