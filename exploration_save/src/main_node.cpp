@@ -6,12 +6,16 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <stdio.h>
 
 using namespace std;
 
 
 //전역 변수
+ros::NodeHandle n;
 ros::Publisher pubClickedPoint;
+bool isFirst = false;
+//ros::ServiceClient clientMode = n.serviceClient<kesla_msg::DoneService>("explore_server/sendNav");
 //
 
 
@@ -21,32 +25,26 @@ void makeTextfile(const char* myString);
 void sendClickedPoint(float x, float y);
 void msgCallback(const nav_msgs::Odometry::ConstPtr& msg);
 
+
 bool srv_callback(kesla_msg::DoneService::Request &req,
-                  kesla_msg::DoneService::Response &res)
-{
+                  kesla_msg::DoneService::Response &res){
   cout << req.myRequest <<endl;
   if(!req.myRequest.compare("finished")){
-    res.myResponse = "finished success";
     ROS_ERROR("탐색 종료");
+    //clientMode.call(req);
     //텍스트 파일 저장//
+    kesla_msg::DoneService req_explor;
+    ros::ServiceClient clientExplor = n.serviceClient<kesla_msg::DoneService>("map_save");
+    clientExplor.call(req_explor);
+
   }else if(!req.myRequest.compare("excuted")){
     res.myResponse = "excuted success";
-    float scale = 0.9;
-
-    /*
-    sendClickedPoint(-0.1,scale-0.45);
-    sendClickedPoint(scale*2,scale-0.45);
-    sendClickedPoint(scale*2,-scale-0.45);
-    sendClickedPoint(-0.1,-scale-0.45);
-    sendClickedPoint(-0.1,scale-0.45);
-    sendClickedPoint(0,0);
-    */
-    //
-    sendClickedPoint(-scale*2,scale*2);
-    sendClickedPoint(scale*2,scale*2);
-    sendClickedPoint(scale*2,-scale);
-    sendClickedPoint(-scale*2,-scale);
-    sendClickedPoint(-scale*2,scale*2);
+    float scale = 10;
+    sendClickedPoint(-scale,scale);
+    sendClickedPoint(scale,scale);
+    sendClickedPoint(scale,-scale);
+    sendClickedPoint(-scale,-scale);
+    sendClickedPoint(-scale,scale);
     sendClickedPoint(0,0);
   }else{
     res.myResponse = "fail";
@@ -54,14 +52,16 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
   return true;
 }
 
+
 void makeTextfile(const char* myString){
+  //
   //myString의 변수를 file의 한 줄에 추가//
-  ofstream outFile("odom_start.txt");
+  ofstream outFile("navigation_result/log.txt");
   outFile << myString << endl;
 
   outFile.close();
-  //
 }
+
 
 void sendClickedPoint(float x, float y){
   geometry_msgs::PointStamped msg;
@@ -70,21 +70,39 @@ void sendClickedPoint(float x, float y){
   pubClickedPoint.publish(msg);
 }
 
+
+void msgCallbackStart(const nav_msgs::Odometry::ConstPtr& msg){
+  //시작 지점 위치를 한 번만 받기 위한 함수
+  stringstream ss;
+  ss << "start_position "<< msg->pose.pose.position.x << " " << msg->pose.pose.position.y << std::endl;
+  ss << "start_quaternion " << msg->pose.pose.orientation.x << " " << msg->pose.pose.orientation.y << " "
+                            << msg->pose.pose.orientation.z << " " << msg->pose.pose.orientation.w << std::endl;
+}
+
+
 void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
 //nav_msgs 토픽의 Odometry 메세지를 받음.
+  if(!isFirst){
+    msgCallbackStart(msg);
+    isFirst = true;
+  }
   stringstream ss;
-  ss << "odom_start:"<< msg->pose.pose.position.x << "," << msg->pose.pose.position.y << std::endl;
+  ss << "end_position "<< msg->pose.pose.position.x << " " << msg->pose.pose.position.y << std::endl;
+  ss << "end_quaternion " << msg->pose.pose.orientation.x << " " << msg->pose.pose.orientation.y << " "
+                            << msg->pose.pose.orientation.z << " " << msg->pose.pose.orientation.w << std::endl;
   makeTextfile(ss.str().c_str());
 }
+
 
 int main(int argc, char** argv){
 
   ros::init(argc, argv, "exploration_save");
 
-  ros::NodeHandle n;
+
   //service
   ros::ServiceServer clientDone = n.advertiseService("explore_server/sendExplorDone",srv_callback);
   ros::ServiceServer clientExcuted = n.advertiseService("explore_server/sendExplorExcuted",srv_callback);
+
   //subscriber
   ros::Subscriber sub = n.subscribe<nav_msgs::Odometry>("/odom",10,msgCallback);
   //Publisher

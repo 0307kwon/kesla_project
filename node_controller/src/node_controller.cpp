@@ -1,6 +1,7 @@
 #include <ros/ros.h>
 #include <node_controller/node_controller.hpp>
 #include <cstring>
+#include <kesla_msg/DoneService.h>
 
 using namespace std;
 
@@ -12,12 +13,13 @@ enum MISSION_MODE{
   MODE_NONE,
   MODE_TRAFFIC_SIGN,
   MODE_EXPLORATION,
+  MODE_MAP_SAVE,
+  MODE_NAVIGATION,
 };
 
-
-void node_controller::modeCallback(const kesla_msg::KeslaMsg::ConstPtr& msg){
-  std::cout << "mode :" + msg->data << std::endl;
-  const char* received_mode = msg->data.c_str();
+bool node_controller::modeCallback(kesla_msg::DoneService::Request &req,kesla_msg::DoneService::Response &res){
+  std::cout << "mode :" << req.myRequest << std::endl;
+  const char* received_mode = req.myRequest.c_str();
 
   if(mode != atoi(received_mode)){
     mode = atoi(received_mode);
@@ -30,9 +32,13 @@ void node_controller::modeCallback(const kesla_msg::KeslaMsg::ConstPtr& msg){
       node_admin.roslaunch("turtlebot3_slam","turtlebot3_slam.launch","slam_methods:=frontier_exploration");
       node_admin.roslaunch("exploration_save","exploration_save.launch");
       //node_admin.roslaunch("camera_to_world","camera.launch");
+    }else if(mode == MODE_MAP_SAVE){
+      node_admin.roslaunch("map_server", "map_saver.launch");
+      ROS_ERROR("done");
     }
   }
 }
+
 
 node_controller::node_controller(int argc, char** argv){
 
@@ -40,12 +46,17 @@ node_controller::node_controller(int argc, char** argv){
 
   ros::NodeHandle nh;
 
+  kesla_msg::DoneService req_finish;    //req 메세지 선언
+  kesla_msg::DoneService res_finish;
+  ros::ServiceClient clientNavDone = nh.serviceClient<kesla_msg::DoneService>("exploration_save/sendNavMode");
+  ros::ServiceServer serverNavDone = nh.advertiseService("exploration_save/sendNavDone", modeCallback);
+/*-------------------------------------------------------------------------------------
   ros::Publisher pub = nh.advertise<kesla_msg::KeslaMsg>("KeslaMsg_kwon",10);
   ros::Subscriber sub = nh.subscribe("/kesla/mode", 10, node_controller::modeCallback);
-
+--------------------------------------------------------------------------------------*/
   ros::Rate rate(20.0);
 
-  kesla_msg::KeslaMsg msg;
+  //kesla_msg::KeslaMsg msg;
   ros::Time beforeTime = ros::Time::now();
 
   while(beforeTime == ros::Time(0)){ // 확실한 beforeTime을 받아오기 위해
