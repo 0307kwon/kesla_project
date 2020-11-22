@@ -30,7 +30,7 @@
 
 # 1. summary
 
-<img src="./image04.gif" width=500px>
+<img src="./image04.gif" width=500px><img src="./image05.gif" width=500px>
 
 ▲ 4개의 방을 모두 둘러보는 터틀봇 [2020-11-08]
 
