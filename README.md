@@ -95,23 +95,23 @@
   <details>
   <summary> opencv/opencv.launch - by 정원석 </summary>
  
-    #### 이미지에서 차선을 인식하기 위한 노드입니다.
+      이미지에서 차선을 인식하기 위한 노드입니다.
 
-    카메라로부터 이미지를 받아온다
+      카메라로부터 이미지를 받아온다
 
-    이미지중 밑 부분만 잘라 사용 (차선이 잘 보이는)
+      이미지중 밑 부분만 잘라 사용 (차선이 잘 보이는)
 
-    노란색만 인식
+      노란색만 인식
 
-        이미지를 hsv로 컬러 변경
+      이미지를 hsv로 컬러 변경
 
-        노란색 영역만 표시( (20, 100, 10), (30, 255, 255) )
+      노란색 영역만 표시( (20, 100, 10), (30, 255, 255) )
 
-    노란색만 인식된 이미지를 cv2.threshold, cv2.GaussianBlur, cv2.Canny를 통해 가공
+      노란색만 인식된 이미지를 cv2.threshold, cv2.GaussianBlur, cv2.Canny를 통해 가공
 
-    cv2.HoughLinesP를 사용하여 파라미터 조정을 통해 차선 정보를 받아온다
+      cv2.HoughLinesP를 사용하여 파라미터 조정을 통해 차선 정보를 받아온다
 
-    왼쪽 오른쪽 선을 구분하고 기울기를 받아와 차선 정보를 controller.launch로 넘겨준다 
+      왼쪽 오른쪽 선을 구분하고 기울기를 받아와 차선 정보를 controller.launch로 넘겨준다 
  
   </details>
   
@@ -119,9 +119,9 @@
   <details>
   <summary> traffic_robot_control/control.launch - by 장성광,정원석,김정환,권세진 </summary>
  
-    #### opencv.launch로부터 받아온 차선의 정보를 활용하여 터틀봇이 도로를 따라갈 수 있도록 제어합니다.
+      opencv.launch로부터 받아온 차선의 정보를 활용하여 터틀봇이 도로를 따라갈 수 있도록 제어합니다.
 
-    차선의 기울기와 위치 정보를 기반으로 터틀봇의 회전속도와 전진속도를 결정합니다.
+      차선의 기울기와 위치 정보를 기반으로 터틀봇의 회전속도와 전진속도를 결정합니다.
  
   </details>
   
@@ -132,10 +132,8 @@
   <p></p>
   <details>
   <summary> turtlebot3_slam/turtlebot3_slam.launch - <a href="https://github.com/ROBOTIS-GIT/turtlebot3">라이브러리</a> </summary>
-  
-  
-  
-    #### [frontier exploration](http://wiki.ros.org/frontier_exploration) 패키지를 이용하여 건물 내부를 모두 탐색합니다.
+ 
+      frontier exploration 패키지를 이용하여 건물 내부를 모두 탐색합니다.
   
   </details>
   
@@ -151,20 +149,19 @@
   <details>
   <summary> exploration_save/exploration_save.launch - by 권세진, 장성광 </summary>
  
- 
-    #### 건물 내를 돌아다니며 얻은 유용한 정보를 기록하기 위한 노드입니다.
+      건물 내를 돌아다니며 얻은 유용한 정보를 기록하기 위한 노드입니다.
 
-    구체적인 기능은 다음과 같습니다.
+      구체적인 기능은 다음과 같습니다.
 
-     1. 실행되자마자 처음 위치(건물 입구의 위치)와 건물 탐색이 종료되었을 때의 마지막 위치를 기록합니다.
+       1. 실행되자마자 처음 위치(건물 입구의 위치)와 건물 탐색이 종료되었을 때의 마지막 위치를 기록합니다.
 
-         => navigation(탈출) 모드에서 활용됩니다.
+           => navigation(탈출) 모드에서 활용됩니다.
 
-     2. person_filtering.launch 로부터 사람을 인식했다는 메세지를 받으면 실시간 맵에 조난자 발견 지점을 기록합니다.
+       2. person_filtering.launch 로부터 사람을 인식했다는 메세지를 받으면 실시간 맵에 조난자 발견 지점을 기록합니다.
 
-     3. 건물 탐색이 모두 완료되면 조난자 발견 지점이 표시된 맵을 이미지 파일로 저장합니다.
+       3. 건물 탐색이 모두 완료되면 조난자 발견 지점이 표시된 맵을 이미지 파일로 저장합니다.
 
-     4. 모든 동작이 종료되면 다음 모드를 mode_decider에 전달합니다.
+       4. 모든 동작이 종료되면 다음 모드를 mode_decider에 전달합니다.
      
      
   </details>
@@ -177,7 +174,7 @@
   <details>
   <summary> map_server/map_saver.launch - <a href="http://wiki.ros.org/map_server">라이브러리<a> </summary>
    
-   #### 만들어진 맵을 savemap.yaml 파일과 savemap.pgm 파일로 저장합니다.
+      만들어진 맵을 savemap.yaml 파일과 savemap.pgm 파일로 저장합니다.
    
   </details>
   
@@ -188,22 +185,20 @@
   <p></p>
   <details>
   <summary> turtlebot3_navigation.launch - <a href="http://wiki.ros.org/turtlebot3_navigation">라이브러리<a> </summary>
- 
- 
-    #### 주변 맵 정보와 로봇의 현재 위치정보를 알고 있을 때, 목적지까지 경로를 안내해주는 패키지입니다.
+    
+      주변 맵 정보와 로봇의 현재 위치정보를 알고 있을 때, 목적지까지 경로를 안내해주는 패키지입니다.
 
-    nav_control.launch에 의해 목적지가 설정됩니다.
+      nav_control.launch에 의해 목적지가 설정됩니다.
  
   </details>
 
   <p></p>
   <details>
   <summary> nav_control/nav_control.launch - by 권세진 </summary>
- 
- 
-     #### turtlebot3_navigation.launch에 목적지를 전달합니다.
- 
-     저희 프로젝트에서는 exploration 모드에서 기록한 건물 입구 위치가 목적지로 설정됩니다.
+     
+      turtlebot3_navigation.launch에 목적지를 전달합니다.
+
+      저희 프로젝트에서는 exploration 모드에서 기록한 건물 입구 위치가 목적지로 설정됩니다.
  
   </details>
   
