@@ -34,7 +34,10 @@ bool node_controller::modeCallback(kesla_msg::DoneService::Request &req,kesla_ms
       //node_admin.roslaunch("camera_to_world","camera.launch");
     }else if(mode == MODE_MAP_SAVE){
       node_admin.roslaunch("map_server", "map_saver.launch");
-      ROS_ERROR("done");
+    }else if(mode == MODE_NAVIGATION){
+      node_admin.init();
+      node_admin.roslaunch("nav_control","nav_control.launch");
+      node_admin.roslaunch("turtlebot3_navigation","turtlebot3_navigation.launch","map_file:=$HOME/navigation_result/savemap.yaml");
     }
   }
 }
@@ -48,8 +51,7 @@ node_controller::node_controller(int argc, char** argv){
 
   kesla_msg::DoneService req_finish;    //req 메세지 선언
   kesla_msg::DoneService res_finish;
-  ros::ServiceClient clientNavDone = nh.serviceClient<kesla_msg::DoneService>("exploration_save/sendNavMode");
-  ros::ServiceServer serverNavDone = nh.advertiseService("exploration_save/sendNavDone", modeCallback);
+  ros::ServiceServer serverNavDone = nh.advertiseService("node_controller/changeMode", modeCallback);
 /*-------------------------------------------------------------------------------------
   ros::Publisher pub = nh.advertise<kesla_msg::KeslaMsg>("KeslaMsg_kwon",10);
   ros::Subscriber sub = nh.subscribe("/kesla/mode", 10, node_controller::modeCallback);

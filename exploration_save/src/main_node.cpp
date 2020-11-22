@@ -12,8 +12,7 @@ using namespace std;
 
 
 //전역 변수
-ros::NodeHandle n;
-ros::Publisher pubClickedPoint;
+
 bool isFirst = false;
 //ros::ServiceClient clientMode = n.serviceClient<kesla_msg::DoneService>("explore_server/sendNav");
 //
@@ -108,8 +107,12 @@ void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
 
 int main(int argc, char** argv){
 
+
+
   ros::init(argc, argv, "exploration_save");
 
+  ros::NodeHandle n;
+  ros::Publisher pubClickedPoint;
 
   //service
   ros::ServiceServer clientDone = n.advertiseService("explore_server/sendExplorDone",srv_callback);
