@@ -2,7 +2,6 @@
 #include <actionlib/client/simple_action_client.h>
 #include <costmap_2d/costmap_2d_ros.h>
 #include <costmap_2d/costmap_2d.h>
-#include <kesla_msg/DoneService.h>
 
 #include <geometry_msgs/PolygonStamped.h>
 #include <geometry_msgs/PointStamped.h>
@@ -22,6 +21,8 @@
 
 #include <visualization_msgs/Marker.h>
 #include <boost/foreach.hpp>
+
+
 namespace frontier_exploration{
 
 /**
@@ -89,6 +90,7 @@ private:
      * @param point Received point from rviz
      */
     void pointCb(const geometry_msgs::PointStampedConstPtr& point){
+      
         double average_distance = polygonPerimeter(input_.polygon) / input_.polygon.points.size();
 
         if(waiting_for_center_){
@@ -154,7 +156,7 @@ public:
         point_viz_pub_ = nh_.advertise<visualization_msgs::Marker>("exploration_polygon_marker", 10);
         point_viz_timer_ = nh_.createWallTimer(ros::WallDuration(0.1), boost::bind(&FrontierExplorationClient::vizPubCb, this));
         ROS_INFO("Please use the 'Point' tool in Rviz to select an exporation boundary.");
-    }
+    }    
 
 };
 

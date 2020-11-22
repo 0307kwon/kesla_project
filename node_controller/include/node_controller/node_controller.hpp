@@ -1,5 +1,6 @@
 #include <kesla_msg/KeslaMsg.h>
 #include <node_controller/cpp_roslaunch.hpp>
+#include <kesla_msg/DoneService.h>
 
 class node_controller{
 
@@ -10,7 +11,7 @@ private:
 public:
   node_controller(int argc, char** argv);
 
-  static void modeCallback(const kesla_msg::KeslaMsg::ConstPtr& msg);
+  static bool modeCallback(kesla_msg::DoneService::Request &req,kesla_msg::DoneService::Response &res);
 
 
 

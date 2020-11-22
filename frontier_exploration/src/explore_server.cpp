@@ -16,10 +16,6 @@
 
 #include <frontier_exploration/geometry_tools.h>
 
-#include <kesla_msg/DoneService.h>
-
-
-
 namespace frontier_exploration{
 
 /**
@@ -49,17 +45,6 @@ public:
 
         as_.registerPreemptCallback(boost::bind(&FrontierExplorationServer::preemptCb, this));
         as_.start();
-
-
-        ros::ServiceClient sendExplorExcuted = private_nh_.serviceClient<kesla_msg::DoneService>("/explore_server/sendExplorExcuted");
-        kesla_msg::DoneService kesla_srv;
-        kesla_srv.request.myRequest = "excuted";
-        if(sendExplorExcuted.call(kesla_srv)){
-          std::cout << "kesla - 실행 완료 메세지 전송완료" << std::endl;
-        }else{
-          ROS_ERROR("fail");
-        }
-
     }
 
 private:
@@ -95,8 +80,6 @@ private:
         //create costmap services
         ros::ServiceClient updateBoundaryPolygon = private_nh_.serviceClient<frontier_exploration::UpdateBoundaryPolygon>("explore_costmap/explore_boundary/update_boundary_polygon");
         ros::ServiceClient getNextFrontier = private_nh_.serviceClient<frontier_exploration::GetNextFrontier>("explore_costmap/explore_boundary/get_next_frontier");
-
-        ros::ServiceClient sendExplorDone = private_nh_.serviceClient<kesla_msg::DoneService>("/explore_server/sendExplorDone");
 
         //wait for move_base and costmap services
         if(!move_client_.waitForServer() || !updateBoundaryPolygon.waitForExistence() || !getNextFrontier.waitForExistence()){
@@ -141,7 +124,7 @@ private:
 
             //check if robot is not within exploration boundary and needs to return to center of search area
             if(goal->explore_boundary.polygon.points.size() > 0 && !pointInPolygon(eval_pose.pose.position,goal->explore_boundary.polygon)){
-
+                
                 //check if robot has explored at least one frontier, and promote debug message to warning
                 if(success_){
                     ROS_WARN("Robot left exploration boundary, returning to center");
@@ -171,22 +154,10 @@ private:
 
             }else{ //if no frontier found, check if search is successful
                 ROS_DEBUG("Couldn't find a frontier");
-                std::cout << "-----------------" << retry_ << "------" << success_ << std::endl;
+
                 //search is succesful
                 if(retry_ == 0 && success_){
                     ROS_WARN("Finished exploring room");
-
-                    //kesla - 커스터마이징//
-                    kesla_msg::DoneService kesla_srv;
-                    kesla_srv.request.myRequest = "finished";
-                    if(sendExplorDone.call(kesla_srv)){
-                      std::stringstream temp;
-                      temp << "receive@@@@@@@@@ "<< kesla_srv.response.myResponse;
-                      ROS_INFO(temp.str().c_str());
-                    }else{
-                      ROS_WARN("fail");
-                    }
-                    //
                     as_.setSucceeded();
                     boost::unique_lock<boost::mutex> lock(move_client_lock_);
                     move_client_.cancelGoalsAtAndBeforeTime(ros::Time::now());
