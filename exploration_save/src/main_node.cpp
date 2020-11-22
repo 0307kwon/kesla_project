@@ -39,12 +39,24 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
 
   }else if(!req.myRequest.compare("excuted")){
     res.myResponse = "excuted success";
-    float scale = 10;
-    sendClickedPoint(-scale,scale);
-    sendClickedPoint(scale,scale);
-    sendClickedPoint(scale,-scale);
-    sendClickedPoint(-scale,-scale);
-    sendClickedPoint(-scale,scale);
+    float scale = 0.9;
+
+    // 실제 실험용
+    /*
+    sendClickedPoint(-0.1,scale-0.45);
+    sendClickedPoint(scale*2,scale-0.45);
+    sendClickedPoint(scale*2,-scale-0.45);
+    sendClickedPoint(-0.1,-scale-0.45);
+    sendClickedPoint(-0.1,scale-0.45);
+    sendClickedPoint(0,0);
+    */
+
+    //가제보용
+    sendClickedPoint(-scale*2,scale*2);
+    sendClickedPoint(scale*2,scale*2);
+    sendClickedPoint(scale*2,-scale);
+    sendClickedPoint(-scale*2,-scale);
+    sendClickedPoint(-scale*2,scale*2);
     sendClickedPoint(0,0);
   }else{
     res.myResponse = "fail";
