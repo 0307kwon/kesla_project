@@ -1,4 +1,4 @@
-map_update_interval: 2.0
+map_update_interval: 0.5
 maxUrange: 3.0
 sigma: 0.05
 kernelSize: 1
@@ -22,7 +22,7 @@ xmin: -2.0
 ymin: -2.0
 xmax: 2.0
 ymax: 2.0
-delta: 0.05
+delta: 0.005
 llsamplerange: 0.01
 llsamplestep: 0.01
 lasamplerange: 0.005

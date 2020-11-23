@@ -1,5 +1,4 @@
 #!/usr/bin/env python
-
 import rospy
 import cv2
 import numpy as np
@@ -44,18 +43,46 @@ class Gray():
         elif self.selecting_sub_image == "raw":
             cv_image = self.bridge.imgmsg_to_cv2(image_msg, "bgr8")
 
-
+	"""
 	dst=cv_image.copy()
 	offset = 190
 	cut_image = cv_image[offset:240, 0:320]
 
-        cv_gray = cv2.cvtColor(cut_image, cv2.COLOR_RGB2GRAY)
-	ret,cv_thres = cv2.threshold(cv_gray, 127, 255, cv2.THRESH_BINARY)
-        gauss_gray = cv2.GaussianBlur(cv_thres,(3,3),3.0)
+	img_hsv = cv2.cvtColor(cut_image, cv2.COLOR_BGR2HSV) 
+	lower_yellow = (23, 41, 133) 
+	upper_yellow = (40, 150, 255)
+	img_mask = cv2.inRange(img_hsv, lower_yellow, upper_yellow) 
+	#img_result = cv2.bitwise_and(img_color, img_color, mask = img_mask)
+	#cv_gray = cv2.cvtColor(img_result, cv2.COLOR_RGB2GRAY)
+	ret,cv_thres = cv2.threshold(img_mask, 127, 255, cv2.THRESH_BINARY)
+  	gauss_gray = cv2.GaussianBlur(cv_thres,(3,3),3.0)
 	canny_gray = cv2.Canny(gauss_gray, 50 ,150)
 
 	#lines = cv2.HoughLines(canny_gray, 0.8, np.pi / 180, 150, srn = 100, stn = 200, min_theta = 0, max_theta = np.pi)
 	lines = cv2.HoughLinesP(canny_gray, rho = 1, theta = np.pi / 180, threshold = 23, minLineLength = 5, maxLineGap = 100)
+	"""
+	
+	
+
+		
+	dst=cv_image.copy()
+	offset = 190
+	cut_image = cv_image[offset:240, 0:320]
+
+	img_hsv = cv2.cvtColor(cut_image, cv2.COLOR_BGR2HSV)
+	lower_yellow = (23, 41, 133) 
+	upper_yellow = (40, 150, 255)
+	img_mask = cv2.inRange(img_hsv, lower_yellow, upper_yellow) 
+
+        #cv_gray = cv2.cvtColor(cut_image, cv2.COLOR_RGB2GRAY)
+	ret,cv_thres = cv2.threshold(img_mask, 127, 255, cv2.THRESH_BINARY)
+        gauss_gray = cv2.GaussianBlur(cv_thres,(3,3),3.0)
+	canny_gray = cv2.Canny(gauss_gray, 50 ,150)
+
+
+	#lines = cv2.HoughLines(canny_gray, 0.8, np.pi / 180, 150, srn = 100, stn = 200, min_theta = 0, max_theta = np.pi)
+	lines = cv2.HoughLinesP(canny_gray, rho = 1, theta = np.pi / 180, threshold = 23, minLineLength = 5, maxLineGap = 100)
+
 
 
 	#if lines is not None:
