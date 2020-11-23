@@ -1,5 +1,5 @@
 <launch>
   <node pkg="nav_control" name="nav_control" type="nav_control" output="screen">
+    <param name="txtSave_path" type="string" value="/home/$(env USER)/navigation_result/kesla_log.txt"/>
   </node>
 </launch>
-    

@@ -37,7 +37,7 @@ bool node_controller::modeCallback(kesla_msg::DoneService::Request &req, kesla_m
     }else if(mode == MODE_NAVIGATION){
       node_admin.init();
       node_admin.roslaunch("nav_control","nav_control.launch");
-      node_admin.roslaunch("turtlebot3_navigation","turtlebot3_navigation.launch","map_file:=$HOME/navigation_result/savemap.yaml");
+      node_admin.roslaunch("turtlebot3_navigation","turtlebot3_navigation.launch","map_file:=/home/kwon/navigation_result/savemap.yaml");
     }
   }
 }
