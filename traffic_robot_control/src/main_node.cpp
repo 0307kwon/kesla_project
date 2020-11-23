@@ -5,6 +5,7 @@
 #include <vector>
 #include <cmath>
 #include <kesla_msg/DoneService.h>
+#include <queue>
 
 using namespace std;
 
@@ -61,6 +62,9 @@ void modeCallback(const std_msgs::String::ConstPtr& msg, Gradient* left, Gradien
 }
 
 int main(int argc, char** argv){
+
+  queue<int> q;
+  ros::Time beforeTime;
 
   Gradient left;
   left.angular = 0;
@@ -223,7 +227,18 @@ if(left.is_vaild && right.is_vaild){
     msg.linear.z = 0;
     msg.angular.x = 0;
     msg.angular.y = 0;
-    msg.angular.z = -(left.x)*0.1/160.0;
+    msg.angular.z = 0;
+
+    q.push(-(left.x)*0.1/160.0);
+    while(beforeTime == ros::Time(0)){
+      beforeTime = ros::Time::now();
+    }
+    if(ros::Time::now() - beforeTime > ros::Duration(2)){
+      msg.angular.z = q.front();
+      q.pop();
+    }
+
+
   }else{
     //n_temp = 0;
     msg.linear.x = 0.05;
@@ -231,7 +246,16 @@ if(left.is_vaild && right.is_vaild){
     msg.linear.z = 0;
     msg.angular.x = 0;
     msg.angular.y = 0;
-    msg.angular.z = -1.0/left.angular-10.0/abs(160-left.x);
+    msg.angular.z = 0;
+
+    q.push(-1.0/left.angular-10.0/abs(160-left.x));
+    while(beforeTime == ros::Time(0)){
+      beforeTime = ros::Time::now();
+    }
+    if(ros::Time::now() - beforeTime > ros::Duration(1)){
+      msg.angular.z = q.front();
+      q.pop();
+    }
   }
 }
 
