@@ -6,7 +6,7 @@ import numpy as np
 from cv_bridge import CvBridge, CvBridgeError
 from sensor_msgs.msg import Image
 from sensor_msgs.msg import CompressedImage
- 
+
 def Gray():
 	image = cv2.imread('/home/g0401828t/catkin_ws/src/opencv/images.jpeg', cv2.IMREAD_COLOR)
 
@@ -27,7 +27,7 @@ def Gray():
 
 	cv2.circle(dst, (70,15), 20, (0,0,255),1)
         cv2.imshow('dst', dst)
-	cv2.imshow('cv_image',cv_image)	
+	cv2.imshow('cv_image',cv_image)
 	cv2.waitKey(0)
 
 if __name__ == '__main__':
