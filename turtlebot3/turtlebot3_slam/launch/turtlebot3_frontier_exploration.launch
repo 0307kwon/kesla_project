@@ -16,7 +16,7 @@
 
   <!-- move_base -->
   <node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
-      <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
+    <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
     <param name="base_global_planner" value="global_planner/GlobalPlanner" />
     <param name="~/DWAPlannerROS/max_scaling_factor" value="0.2"/>
     <param name="~/GlobalPlanner/cost_factor" value="0.55"/>
