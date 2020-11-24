@@ -10,9 +10,7 @@
 using namespace std;
 
 string txtSave_path_;
-bool isFirst1 = false;
-ros::Publisher *pubInitialPose_ptr;
-
+int isFirst = 0;
 geometry_msgs::PoseWithCovarianceStamped initPose_msg;
 move_base_msgs::MoveBaseActionGoal goal_msg;
 void readLogfile(){
@@ -53,7 +51,7 @@ void readLogfile(){
 
 void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
 //nav_msgs 토픽의 Odometry 메세지를 받음.
-  if(!isFirst1){
+  if(isFirst == 0){
     initPose_msg.header.stamp = ros::Time::now();
     initPose_msg.header.frame_id = "map";
     initPose_msg.pose.pose.position.x = msg->pose.pose.position.x;
@@ -63,8 +61,7 @@ void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
     initPose_msg.pose.pose.orientation.y = msg->pose.pose.orientation.y;
     initPose_msg.pose.pose.orientation.z = msg->pose.pose.orientation.z;
     initPose_msg.pose.pose.orientation.w = msg->pose.pose.orientation.w;
-    isFirst1 = true;
-    pubInitialPose_ptr->publish(initPose_msg);
+    isFirst = 1;
   }
 }
 
@@ -74,19 +71,18 @@ int main(int argc, char** argv){
   ros::init(argc, argv, "nav_control");
 
   ros::NodeHandle n;
-
+  cout << "골 메세지 " << goal_msg << endl;
   n.param<string>("nav_control/txtSave_path", txtSave_path_, "");
   cout<< "경로 : " << txtSave_path_ << endl;
   //Publisher
   ros::Publisher pubInitialPose = n.advertise<geometry_msgs::PoseWithCovarianceStamped>("/initialpose",10);
   ros::Publisher pubGoal = n.advertise<move_base_msgs::MoveBaseActionGoal>("/move_base/goal",10);
   ros::Subscriber sub = n.subscribe<nav_msgs::Odometry>("/odom",10,msgCallback);
-  pubInitialPose_ptr = &pubInitialPose;
 
   ros::Rate rate(20.0);
   ros::Time beforeTime;
 
-  int duration_time = 2;
+  int duration_time = 4;
 
 
   while(beforeTime == ros::Time(0)){ // 확실한 beforeTime을 받아오기 위해
@@ -95,19 +91,19 @@ int main(int argc, char** argv){
 
 
   readLogfile();
-  bool isFirst2 = false;
   while(n.ok()){
+    if(isFirst == 1){
+      cout << "send initial pose" << endl;
+      pubInitialPose.publish(initPose_msg);
+    }else if(isFirst == 2){
+      cout << "send goal pose" << endl;
+      pubGoal.publish(goal_msg);
+    }
     if(ros::Time::now() - beforeTime > ros::Duration(duration_time)){ // 5초마다 동작중임을 알림
-      if(!isFirst2){
-        cout << "send goal" << endl;
-        pubGoal.publish(goal_msg);
-        isFirst2 = true;
-      }else{
-        cout << "nav_control 동작 중" << endl;
-      }
+      isFirst++;
+      cout << "nav_control 동작 중" << endl;
       beforeTime = ros::Time::now();
     }
-
     ros::spinOnce();
     rate.sleep();
   }

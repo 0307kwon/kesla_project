@@ -3,6 +3,7 @@
 #include <kesla_msg/DoneService.h>
 #include <string>
 #include <geometry_msgs/PointStamped.h>
+#include <std_msgs/String.h>
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -15,9 +16,9 @@ using namespace std;
 ros::Publisher* pubClickedPoint_ptr;
 ros::ServiceClient* clientExplor_ptr;
 bool isFirst = false;
-stringstream save_ss;
 string txtSave_path_;
 nav_msgs::Odometry turtle_pose;
+ofstream arrowLogFile;
 //ros::ServiceClient clientMode = n.serviceClient<kesla_msg::DoneService>("explore_server/sendNav");
 //
 
@@ -34,42 +35,34 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
   if(!req.myRequest.compare("finished")){
     ROS_ERROR("exploration finished");
     //clientMode.call(req);
-    //텍스트 파일 저장//
-    save_ss << "end_position "<< turtle_pose.pose.pose.position.x << " " << turtle_pose.pose.pose.position.y << std::endl;
-    save_ss << "end_quaternion " << turtle_pose.pose.pose.orientation.x << " " << turtle_pose.pose.pose.orientation.y << " "
-                              << turtle_pose.pose.pose.orientation.z << " " << turtle_pose.pose.pose.orientation.w << std::endl;
-    ofstream outFile(txtSave_path_.c_str());
-    cout<< "이름" << txtSave_path_ << endl;
-    if(outFile.is_open()){
-      outFile << save_ss.str();
-      outFile.close();
-    }
     //다음 모드로 이동//
+    arrowLogFile.close();
     kesla_msg::DoneService req_explor;
     req_explor.request.myRequest = "map_save";
     clientExplor_ptr->call(req_explor);
-
   }else if(!req.myRequest.compare("excuted")){
     res.myResponse = "excuted success";
     float scale = 0.9;
 
     // 실제 실험용
     /*
-    sendClickedPoint(-0.1,scale-0.45);
-    sendClickedPoint(scale*2,scale-0.45);
-    sendClickedPoint(scale*2,-scale-0.45);
-    sendClickedPoint(-0.1,-scale-0.45);
-    sendClickedPoint(-0.1,scale-0.45);
+    float right_line = -0.1;
+    sendClickedPoint(right_line,2*scale-0.45);
+    sendClickedPoint(scale*2,2*scale-0.45);
+    sendClickedPoint(scale*2,-2*scale-0.45);
+    sendClickedPoint(right_line,-2*scale-0.45);
+    sendClickedPoint(right_line,2*scale-0.45);
     sendClickedPoint(0,0);
     */
-
     //가제보용
+
     sendClickedPoint(-scale*2,scale*2);
     sendClickedPoint(scale*2,scale*2);
     sendClickedPoint(scale*2,-scale);
     sendClickedPoint(-scale*2,-scale);
     sendClickedPoint(-scale*2,scale*2);
     sendClickedPoint(0,0);
+
   }else{
     res.myResponse = "fail";
   }
@@ -85,7 +78,7 @@ void sendClickedPoint(float x, float y){
 }
 
 
-void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
+void odomCallback(const nav_msgs::Odometry::ConstPtr& msg){
 //nav_msgs 토픽의 Odometry 메세지를 받음.
   turtle_pose.pose.pose.position.x = msg->pose.pose.position.x;
   turtle_pose.pose.pose.position.y = msg->pose.pose.position.y;
@@ -96,11 +89,23 @@ void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
   turtle_pose.pose.pose.orientation.w = msg->pose.pose.orientation.w;
 
   if(!isFirst){
+    stringstream save_ss;
     save_ss << "start_position "<< turtle_pose.pose.pose.position.x << " " << turtle_pose.pose.pose.position.y << std::endl;
     save_ss << "start_quaternion " << turtle_pose.pose.pose.orientation.x << " " << turtle_pose.pose.pose.orientation.y << " "
-                              << turtle_pose.pose.pose.orientation.z << " " << turtle_pose.pose.pose.orientation.w << std::endl;
+                              << turtle_pose.pose.pose.orientation.z << " " << turtle_pose.pose.pose.orientation.w << " "<< std::endl;
+    //텍스트 파일 저장//
+    ofstream outFile((txtSave_path_+"/kesla_log.txt").c_str());
+    if(outFile.is_open()){
+      outFile << save_ss.str();
+      outFile.close();
+    }
     isFirst = true;
   }
+}
+
+void personCallback(const std_msgs::String::ConstPtr& msg){
+  arrowLogFile << turtle_pose.pose.pose.position.x << " " << turtle_pose.pose.pose.position.y <<
+  " "<< turtle_pose.pose.pose.orientation.x << " " << turtle_pose.pose.pose.orientation.y << " " << turtle_pose.pose.pose.orientation.z << " " << turtle_pose.pose.pose.orientation.w << endl;
 }
 
 
@@ -108,7 +113,6 @@ int main(int argc, char** argv){
 
   ros::init(argc, argv, "exploration_save");
   ros::NodeHandle n;
-
   n.param<string>("exploration_save/txtSave_path", txtSave_path_, "");
   //service
   ros::ServiceServer clientDone = n.advertiseService("explore_server/sendExplorDone",srv_callback);
@@ -116,10 +120,17 @@ int main(int argc, char** argv){
   ros::ServiceClient clientExplor = n.serviceClient<kesla_msg::DoneService>("mode_decider/changeMode");
   clientExplor_ptr = &clientExplor;
   //subscriber
-  ros::Subscriber sub = n.subscribe<nav_msgs::Odometry>("/odom",10,msgCallback);
+  ros::Subscriber odom_sub = n.subscribe<nav_msgs::Odometry>("/odom",10,odomCallback);
+  ros::Subscriber person_sub = n.subscribe<std_msgs::String>("/kesla/yolo/personDetect",10,personCallback);
   //Publisher
   ros::Publisher pubClickedPoint = n.advertise<geometry_msgs::PointStamped>("/clicked_point",10);
   pubClickedPoint_ptr = &pubClickedPoint;
+
+
+  arrowLogFile.open((txtSave_path_+"/arrow_log.txt").c_str());
+  if(!arrowLogFile.is_open()){
+    ROS_ERROR("cannot open arrow_log.txt");
+  }
 
   ros::Rate rate(20.0);
   ros::Time beforeTime;
@@ -132,7 +143,6 @@ int main(int argc, char** argv){
       cout << "exploration_save 동작중" << endl;
       beforeTime = ros::Time::now();
     }
-
     ros::spinOnce();
     rate.sleep();
   }

@@ -1,0 +1,9 @@
+<launch>
+
+
+  <node pkg="person_filtering" name="person_filtering" type="person_filtering.py" output="screen">
+
+  </node>
+
+
+</launch>

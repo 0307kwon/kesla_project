@@ -47,7 +47,7 @@ PLUGINLIB_EXPORT_CLASS(navfn::NavfnROS, nav_core::BaseGlobalPlanner)
 
 namespace navfn {
 
-  NavfnROS::NavfnROS() 
+  NavfnROS::NavfnROS()
     : costmap_(NULL),  planner_(), initialized_(false), allow_unknown_(true) {}
 
   NavfnROS::NavfnROS(std::string name, costmap_2d::Costmap2DROS* costmap_ros)
@@ -82,6 +82,8 @@ namespace navfn {
       private_nh.param("planner_window_x", planner_window_x_, 0.0);
       private_nh.param("planner_window_y", planner_window_y_, 0.0);
       private_nh.param("default_tolerance", default_tolerance_, 0.0);
+
+      std::cout << "이름 : "<< allow_unknown_ << std::endl;
 
       //get the tf prefix
       ros::NodeHandle prefix_nh;
@@ -189,19 +191,19 @@ namespace navfn {
     resp.plan.header.frame_id = global_frame_;
 
     return true;
-  } 
+  }
 
   void NavfnROS::mapToWorld(double mx, double my, double& wx, double& wy) {
     wx = costmap_->getOriginX() + mx * costmap_->getResolution();
     wy = costmap_->getOriginY() + my * costmap_->getResolution();
   }
 
-  bool NavfnROS::makePlan(const geometry_msgs::PoseStamped& start, 
+  bool NavfnROS::makePlan(const geometry_msgs::PoseStamped& start,
       const geometry_msgs::PoseStamped& goal, std::vector<geometry_msgs::PoseStamped>& plan){
     return makePlan(start, goal, default_tolerance_, plan);
   }
 
-  bool NavfnROS::makePlan(const geometry_msgs::PoseStamped& start, 
+  bool NavfnROS::makePlan(const geometry_msgs::PoseStamped& start,
       const geometry_msgs::PoseStamped& goal, double tolerance, std::vector<geometry_msgs::PoseStamped>& plan){
     boost::mutex::scoped_lock lock(mutex_);
     if(!initialized_){
@@ -216,13 +218,13 @@ namespace navfn {
 
     //until tf can handle transforming things that are way in the past... we'll require the goal to be in our global frame
     if(tf::resolve(tf_prefix_, goal.header.frame_id) != tf::resolve(tf_prefix_, global_frame_)){
-      ROS_ERROR("The goal pose passed to this planner must be in the %s frame.  It is instead in the %s frame.", 
+      ROS_ERROR("The goal pose passed to this planner must be in the %s frame.  It is instead in the %s frame.",
                 tf::resolve(tf_prefix_, global_frame_).c_str(), tf::resolve(tf_prefix_, goal.header.frame_id).c_str());
       return false;
     }
 
     if(tf::resolve(tf_prefix_, start.header.frame_id) != tf::resolve(tf_prefix_, global_frame_)){
-      ROS_ERROR("The start pose passed to this planner must be in the %s frame.  It is instead in the %s frame.", 
+      ROS_ERROR("The start pose passed to this planner must be in the %s frame.  It is instead in the %s frame.",
                 tf::resolve(tf_prefix_, global_frame_).c_str(), tf::resolve(tf_prefix_, start.header.frame_id).c_str());
       return false;
     }
@@ -366,7 +368,7 @@ namespace navfn {
       return;
     }
 
-    //create a message for the plan 
+    //create a message for the plan
     nav_msgs::Path gui_path;
     gui_path.poses.resize(path.size());
 
@@ -395,7 +397,7 @@ namespace navfn {
 
     //until tf can handle transforming things that are way in the past... we'll require the goal to be in our global frame
     if(tf::resolve(tf_prefix_, goal.header.frame_id) != tf::resolve(tf_prefix_, global_frame_)){
-      ROS_ERROR("The goal pose passed to this planner must be in the %s frame.  It is instead in the %s frame.", 
+      ROS_ERROR("The goal pose passed to this planner must be in the %s frame.  It is instead in the %s frame.",
                 tf::resolve(tf_prefix_, global_frame_).c_str(), tf::resolve(tf_prefix_, goal.header.frame_id).c_str());
       return false;
     }
