@@ -4,8 +4,8 @@ raytrace_range: 3.5
 footprint: [[-0.001, -0.001], [-0.001, 0.001], [0.001, 0.001], [0.001, -0.001]]
 robot_radius: 0.001
 
-inflation_radius: 0.10 #0.08 #0.05
-cost_scaling_factor: 0.1 #0.5(낮은 해상도)
+inflation_radius: 0.10 #0.05
+cost_scaling_factor: 5.0 #0.1 #0.5(낮은 해상도)
 
 map_type: costmap
 observation_sources: scan
