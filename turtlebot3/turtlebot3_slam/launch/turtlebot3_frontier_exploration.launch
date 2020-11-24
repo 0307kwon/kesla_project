@@ -19,7 +19,7 @@
     <param name="base_local_planner" value="dwa_local_planner/DWAPlannerROS" />
     <param name="base_global_planner" value="global_planner/GlobalPlanner" />
 
-    <param name="~/GlobalPlanner/default_tolerance" value="0.07"/>
+    <param name="~/GlobalPlanner/default_tolerance" value="0.1"/>
     <param name="~/GlobalPlanner/use_grid_path" value="false"/>
     <param name="~/GlobalPlanner/use_dijkstra" value="true"/>
     <param name="~/GlobalPlanner/cost_factor" value="0.55"/>
