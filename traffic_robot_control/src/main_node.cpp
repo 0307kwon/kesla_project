@@ -5,7 +5,6 @@
 #include <vector>
 #include <cmath>
 #include <kesla_msg/DoneService.h>
-#include <queue>
 
 using namespace std;
 
@@ -51,7 +50,6 @@ void modeCallback(const std_msgs::String::ConstPtr& msg, Gradient* left, Gradien
 
   if(gradient[2].compare("empty") == 0){
     right->angular = 0;
-
     right->is_vaild = false;
   }else{
     right->angular = atof(gradient[2].c_str());
@@ -63,8 +61,8 @@ void modeCallback(const std_msgs::String::ConstPtr& msg, Gradient* left, Gradien
 
 int main(int argc, char** argv){
 
-  queue<int> q;
-  ros::Time beforeTime;
+
+  int duration = 3;
 
   Gradient left;
   left.angular = 0;
@@ -80,14 +78,24 @@ int main(int argc, char** argv){
 
   ros::NodeHandle nh;
 
+  kesla_msg::DoneService lineFin;
+
   ros::Publisher pub = nh.advertise<geometry_msgs::Twist>("/cmd_vel",10);
   ros::Subscriber sub = nh.subscribe<std_msgs::String>("/kesla/gradient", 10, boost::bind(modeCallback,_1,&left, &right) );
+  ros::ServiceClient clientLine = nh.serviceClient<kesla_msg::DoneService>("mode_decider/changeMode");
+
 
   ros::Rate rate(40.0);
 
   geometry_msgs::Twist msg;
 
   int n_temp = 0; // 일정 범위 동안 강제 회전시키기 위한 변수입니다.//
+
+  ros::Time beforeTime = ros::Time::now();
+
+  while(beforeTime == ros::Time(0)){ // 확실한 beforeTime을 받아오기 위해
+    beforeTime = ros::Time::now();
+  }
 
   while(nh.ok()){
 
@@ -190,125 +198,119 @@ int main(int argc, char** argv){
 
 */
 
-if(left.is_vaild && right.is_vaild){
-  //두쪽다 보일때//
-  msg.linear.x = 0.05;
-  msg.linear.y = 0;
-  msg.linear.z = 0;
-  msg.angular.x = 0;
-  msg.angular.y = 0;
-  msg.angular.z = 0;
-
-
-}else if(left.is_vaild == false && right.is_vaild == true){
-  //오른쪽만 보일때 - 좌회전 //
-  if(right.angular <-35){
-    msg.linear.x = 0.05;
-    msg.linear.y = 0;
-    msg.linear.z = 0;
-    msg.angular.x = 0;
-    msg.angular.y = 0;
-    msg.angular.z = (320-right.x)*0.1/160.0;
-  }else{
-    //n_temp = 0;
-    msg.linear.x = 0.05;
-    msg.linear.y = 0;
-    msg.linear.z = 0;
-    msg.angular.x = 0;
-    msg.angular.y = 0;
-    msg.angular.z = -1.0/right.angular+10.0/abs(160-right.x);
-  }
-
-}else if(left.is_vaild == true && right.is_vaild == false){
-
-  if(left.angular > 35){
+  if(left.is_vaild && right.is_vaild){
+    //두쪽다 보일때//
+    beforeTime = ros::Time::now();
     msg.linear.x = 0.05;
     msg.linear.y = 0;
     msg.linear.z = 0;
     msg.angular.x = 0;
     msg.angular.y = 0;
     msg.angular.z = 0;
-
-    q.push(-(left.x)*0.1/160.0);
-    while(beforeTime == ros::Time(0)){
-      beforeTime = ros::Time::now();
+  }else if(left.is_vaild == false && right.is_vaild == true){
+    //오른쪽만 보일때 - 좌회전 //
+    beforeTime = ros::Time::now();
+    if(right.angular <-35){
+      msg.linear.x = 0.05;
+      msg.linear.y = 0;
+      msg.linear.z = 0;
+      msg.angular.x = 0;
+      msg.angular.y = 0;
+      msg.angular.z = (320-right.x)*0.1/160.0;
+    }else{
+      //n_temp = 0;
+      msg.linear.x = 0.05;
+      msg.linear.y = 0;
+      msg.linear.z = 0;
+      msg.angular.x = 0;
+      msg.angular.y = 0;
+      msg.angular.z = -1.0/right.angular+10.0/abs(160-right.x);
     }
-    if(ros::Time::now() - beforeTime > ros::Duration(2)){
-      msg.angular.z = q.front();
-      q.pop();
+  }else if(left.is_vaild == true && right.is_vaild == false){
+    //왼쪽만 보일때
+    beforeTime = ros::Time::now();
+    if(left.angular > 35){
+      msg.linear.x = 0.05;
+      msg.linear.y = 0;
+      msg.linear.z = 0;
+      msg.angular.x = 0;
+      msg.angular.y = 0;
+      msg.angular.z = -(left.x)*0.1/160.0;
+    }else{
+      //n_temp = 0;
+      msg.linear.x = 0.05;
+      msg.linear.y = 0;
+      msg.linear.z = 0;
+      msg.angular.x = 0;
+      msg.angular.y = 0;
+      msg.angular.z = -1.0/left.angular-10.0/abs(160-left.x);
     }
-
-
-  }else{
-    //n_temp = 0;
-    msg.linear.x = 0.05;
-    msg.linear.y = 0;
-    msg.linear.z = 0;
-    msg.angular.x = 0;
-    msg.angular.y = 0;
-    msg.angular.z = 0;
-
-    q.push(-1.0/left.angular-10.0/abs(160-left.x));
-    while(beforeTime == ros::Time(0)){
-      beforeTime = ros::Time::now();
-    }
-    if(ros::Time::now() - beforeTime > ros::Duration(1)){
-      msg.angular.z = q.front();
-      q.pop();
-    }
-  }
-}
-
-    /*
-    if(left.is_vaild && right.is_vaild){
-      //두쪽다 보일때//
-      msg.linear.x = SPD+0.08;
+  }else if(left.is_vaild == false && right.is_vaild == false){
+      msg.linear.x = 0;
       msg.linear.y = 0;
       msg.linear.z = 0;
       msg.angular.x = 0;
       msg.angular.y = 0;
       msg.angular.z = 0;
-
-
-    }else if(left.is_vaild == false && right.is_vaild == true){
-      //오른쪽만 보일때 - 좌회전 //
-      if(right.angular <-35){
-        msg.linear.x = 0.05;
-        msg.linear.y = 0;
-        msg.linear.z = 0;
-        msg.angular.x = 0;
-        msg.angular.y = 0;
-        msg.angular.z = (320-right.x)*0.1/160.0;
-      }else{
-        //n_temp = 0;
-        msg.linear.x = 0.05;
-        msg.linear.y = 0;
-        msg.linear.z = 0;
-        msg.angular.x = 0;
-        msg.angular.y = 0;
-        msg.angular.z = -0.03*abs(right.angular+25)+0.3;//0.05*right.angular+1.75;
-      }
-
-    }else if(left.is_vaild == true && right.is_vaild == false){
-
-      if(left.angular > 35){
-        msg.linear.x = 0.05;
-        msg.linear.y = 0;
-        msg.linear.z = 0;
-        msg.angular.x = 0;
-        msg.angular.y = 0;
-        msg.angular.z = -(left.x)*0.1/160.0;
-      }else{
-        //n_temp = 0;
-        msg.linear.x = 0.05;
-        msg.linear.y = 0;
-        msg.linear.z = 0;
-        msg.angular.x = 0;
-        msg.angular.y = 0;
-        msg.angular.z = 0.03*abs(right.angular+25)-0.3;
+      
+      if(ros::Time::now() - beforeTime > ros::Duration(duration)){
+        //서비스
+        lineFin.request.myRequest = "exploration";
+        clientLine.call(lineFin);
       }
     }
-    */
+  }
+
+      /*
+      if(left.is_vaild && right.is_vaild){
+        //두쪽다 보일때//
+        msg.linear.x = SPD+0.08;
+        msg.linear.y = 0;
+        msg.linear.z = 0;
+        msg.angular.x = 0;
+        msg.angular.y = 0;
+        msg.angular.z = 0;
+
+
+      }else if(left.is_vaild == false && right.is_vaild == true){
+        //오른쪽만 보일때 - 좌회전 //
+        if(right.angular <-35){
+          msg.linear.x = 0.05;
+          msg.linear.y = 0;
+          msg.linear.z = 0;
+          msg.angular.x = 0;
+          msg.angular.y = 0;
+          msg.angular.z = (320-right.x)*0.1/160.0;
+        }else{
+          //n_temp = 0;
+          msg.linear.x = 0.05;
+          msg.linear.y = 0;
+          msg.linear.z = 0;
+          msg.angular.x = 0;
+          msg.angular.y = 0;
+          msg.angular.z = -0.03*abs(right.angular+25)+0.3;//0.05*right.angular+1.75;
+        }
+
+      }else if(left.is_vaild == true && right.is_vaild == false){
+
+        if(left.angular > 35){
+          msg.linear.x = 0.05;
+          msg.linear.y = 0;
+          msg.linear.z = 0;
+          msg.angular.x = 0;
+          msg.angular.y = 0;
+          msg.angular.z = -(left.x)*0.1/160.0;
+        }else{
+          //n_temp = 0;
+          msg.linear.x = 0.05;
+          msg.linear.y = 0;
+          msg.linear.z = 0;
+          msg.angular.x = 0;
+          msg.angular.y = 0;
+          msg.angular.z = 0.03*abs(right.angular+25)-0.3;
+        }
+      }
+      */
 
 
     pub.publish(msg);
@@ -320,4 +322,3 @@ if(left.is_vaild && right.is_vaild){
     ros::spinOnce();
     rate.sleep();
   }
-}
