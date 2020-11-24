@@ -93,6 +93,7 @@ int main(int argc, char** argv){
   readLogfile();
   while(n.ok()){
     if(isFirst == 1){
+      ros::Duration(3).sleep();
       cout << "send initial pose" << endl;
       pubInitialPose.publish(initPose_msg);
     }else if(isFirst == 2){

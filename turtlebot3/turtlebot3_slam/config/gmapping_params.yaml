@@ -19,7 +19,7 @@ temporalUpdate: 0.5
 resampleThreshold: 0.5
 particles: 200
 xmin: -2.0
-ymin: -2.0
+ymin: -3.0
 xmax: 3.0
 ymax: 2.0
 delta: 0.02

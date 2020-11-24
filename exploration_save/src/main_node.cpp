@@ -19,6 +19,8 @@ bool isFirst = false;
 string txtSave_path_;
 nav_msgs::Odometry turtle_pose;
 ofstream arrowLogFile;
+ros::Time arrow_beforeTime;
+
 //ros::ServiceClient clientMode = n.serviceClient<kesla_msg::DoneService>("explore_server/sendNav");
 //
 
@@ -45,14 +47,12 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
     float scale = 0.9;
 
     // 실제 실험용
-
-    float right_line = -0.2;
-    sendClickedPoint(right_line,2*scale-0.45);
-    sendClickedPoint(scale*2,2*scale-0.45);
-    sendClickedPoint(scale*2,-2*scale-0.45);
-    sendClickedPoint(right_line,-2*scale-0.45);
-    sendClickedPoint(right_line,2*scale-0.45);
-    sendClickedPoint(0,0);
+    sendClickedPoint(2.05714917183,-0.110125221312);
+    sendClickedPoint(-1.08613455296,-0.100113593042);
+    sendClickedPoint(-0.966009616852,-2.72309398651);
+    sendClickedPoint(2.00709676743,-2.5729238987);
+    sendClickedPoint(2.0371286869,-0.080091163516);
+    sendClickedPoint(-0.455476373434,-2.57292366028);
 
     //가제보용
     /*
@@ -104,8 +104,11 @@ void odomCallback(const nav_msgs::Odometry::ConstPtr& msg){
 }
 
 void personCallback(const std_msgs::String::ConstPtr& msg){
-  arrowLogFile << turtle_pose.pose.pose.position.x << " " << turtle_pose.pose.pose.position.y <<
-  " "<< turtle_pose.pose.pose.orientation.x << " " << turtle_pose.pose.pose.orientation.y << " " << turtle_pose.pose.pose.orientation.z << " " << turtle_pose.pose.pose.orientation.w << endl;
+  if(ros::Time::now() - arrow_beforeTime > ros::Duration(0.5)){
+    arrow_beforeTime = ros::Time::now();
+    arrowLogFile << turtle_pose.pose.pose.position.x << " " << turtle_pose.pose.pose.position.y <<
+    " "<< turtle_pose.pose.pose.orientation.x << " " << turtle_pose.pose.pose.orientation.y << " " << turtle_pose.pose.pose.orientation.z << " " << turtle_pose.pose.pose.orientation.w << endl;
+  }
 }
 
 
@@ -137,6 +140,7 @@ int main(int argc, char** argv){
 
   while(beforeTime == ros::Time(0)){ // 확실한 beforeTime을 받아오기 위해
     beforeTime = ros::Time::now();
+    arrow_beforeTime = ros::Time::now();
   }
   while(n.ok()){
     if(ros::Time::now() - beforeTime > ros::Duration(5)){ // 5초마다 동작중임을 알림
