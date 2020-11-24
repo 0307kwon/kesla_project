@@ -18,6 +18,7 @@ ros::ServiceClient* clientExplor_ptr;
 bool isFirst = false;
 string txtSave_path_;
 nav_msgs::Odometry turtle_pose;
+ofstream arrowLogFile;
 //ros::ServiceClient clientMode = n.serviceClient<kesla_msg::DoneService>("explore_server/sendNav");
 //
 
@@ -35,10 +36,10 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
     ROS_ERROR("exploration finished");
     //clientMode.call(req);
     //다음 모드로 이동//
+    arrowLogFile.close();
     kesla_msg::DoneService req_explor;
     req_explor.request.myRequest = "map_save";
     clientExplor_ptr->call(req_explor);
-
   }else if(!req.myRequest.compare("excuted")){
     res.myResponse = "excuted success";
     float scale = 0.9;
@@ -103,12 +104,8 @@ void odomCallback(const nav_msgs::Odometry::ConstPtr& msg){
 }
 
 void personCallback(const std_msgs::String::ConstPtr& msg){
-  ofstream outFile((txtSave_path_+"/arrow_log.txt").c_str());
-  if(outFile.is_open()){
-    outFile << turtle_pose.pose.pose.position.x << " " << turtle_pose.pose.pose.position.y <<
-    " "<< turtle_pose.pose.pose.orientation.x << " " << turtle_pose.pose.pose.orientation.y << " " << turtle_pose.pose.pose.orientation.z << turtle_pose.pose.pose.orientation.w << endl;
-    outFile.close();
-  }
+  arrowLogFile << turtle_pose.pose.pose.position.x << " " << turtle_pose.pose.pose.position.y <<
+  " "<< turtle_pose.pose.pose.orientation.x << " " << turtle_pose.pose.pose.orientation.y << " " << turtle_pose.pose.pose.orientation.z << " " << turtle_pose.pose.pose.orientation.w << endl;
 }
 
 
@@ -129,6 +126,12 @@ int main(int argc, char** argv){
   ros::Publisher pubClickedPoint = n.advertise<geometry_msgs::PointStamped>("/clicked_point",10);
   pubClickedPoint_ptr = &pubClickedPoint;
 
+
+  arrowLogFile.open((txtSave_path_+"/arrow_log.txt").c_str());
+  if(!arrowLogFile.is_open()){
+    ROS_ERROR("cannot open arrow_log.txt");
+  }
+
   ros::Rate rate(20.0);
   ros::Time beforeTime;
 
@@ -140,7 +143,6 @@ int main(int argc, char** argv){
       cout << "exploration_save 동작중" << endl;
       beforeTime = ros::Time::now();
     }
-
     ros::spinOnce();
     rate.sleep();
   }
