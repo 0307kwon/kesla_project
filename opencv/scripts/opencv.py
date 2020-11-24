@@ -193,7 +193,6 @@ class Gray():
 	rate = rospy.Rate(20)#20hz
 	while not rospy.is_shutdown():
 		hello_str = "%s,%s,%s,%s"% (gleft_avg,gleft_x,gright_avg,gright_x)
-		rospy.loginfo(hello_str)
 	        pub.publish(hello_str)
        		rate.sleep()
 
