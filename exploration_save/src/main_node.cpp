@@ -92,7 +92,7 @@ void odomCallback(const nav_msgs::Odometry::ConstPtr& msg){
     stringstream save_ss;
     save_ss << "start_position "<< turtle_pose.pose.pose.position.x << " " << turtle_pose.pose.pose.position.y << std::endl;
     save_ss << "start_quaternion " << turtle_pose.pose.pose.orientation.x << " " << turtle_pose.pose.pose.orientation.y << " "
-                              << turtle_pose.pose.pose.orientation.z << " " << turtle_pose.pose.pose.orientation.w << std::endl;
+                              << turtle_pose.pose.pose.orientation.z << " " << turtle_pose.pose.pose.orientation.w << " "<< std::endl;
     //텍스트 파일 저장//
     ofstream outFile((txtSave_path_+"/kesla_log.txt").c_str());
     if(outFile.is_open()){
