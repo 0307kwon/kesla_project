@@ -8,9 +8,9 @@ detected = ""
 class keslaYolo:
     def __init__(self):
         rospy.Subscriber("/darknet_ros/bounding_boxes", BoundingBoxes, self.callback)
-        
+
     def callback(self, msg):
-        global detected 
+        global detected
         for i in range(len(msg.bounding_boxes)):
             if msg.bounding_boxes[0].Class == "person":
                 rospy.loginfo(rospy.get_caller_id() + "I saw %s", msg.bounding_boxes[0].Class)
@@ -24,12 +24,13 @@ class keslaYolo:
 	    #rospy.loginfo(rospy.get_caller_id() + "I heard %s", len(msg.bounding_boxes))
 
     def main(self):
-        global detected 
+        global detected
 	pub = rospy.Publisher('/kesla/yolo/personDetect',String,queue_size=10)
 	rate = rospy.Rate(20)#20hz
 	while not rospy.is_shutdown():
             rospy.loginfo("person detected:"+ detected)
-	    pub.publish(detected)
+            if detected == "true":
+	           pub.publish(detected)
             rate.sleep()
         rospy.spin()
 
