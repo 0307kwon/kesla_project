@@ -28,7 +28,6 @@ class keslaYolo:
 	pub = rospy.Publisher('/kesla/yolo/personDetect',String,queue_size=10)
 	rate = rospy.Rate(20)#20hz
 	while not rospy.is_shutdown():
-            rospy.loginfo("person detected:"+ detected)
             if detected == "true":
 	           pub.publish(detected)
             rate.sleep()
