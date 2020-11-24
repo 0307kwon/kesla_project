@@ -11,7 +11,7 @@ from pyquaternion import Quaternion
 np.set_printoptions(suppress=True)
 
 
-img = cv2.imread('/home/g0401828t/navigation_result/savemap1.pgm',cv2.IMREAD_GRAYSCALE)
+img = cv2.imread('/home/kwon/navigation_result/savemap.pgm',cv2.IMREAD_GRAYSCALE)
 img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
 
 green_color = (0, 0, 255)
@@ -42,10 +42,11 @@ def DrawArrow(quaternion, origin):
     arrowStart = (arrowStart[0]+int(2/0.02),-(arrowStart[1]+int(3/0.02)-233))
     arrowEnd = (arrowEnd[0]+int(2/0.02), -(arrowEnd[1]+int(3/0.02)-233))
 
+
     cv2.arrowedLine(img, arrowStart, arrowEnd, green_color, thickness=1)
 
 def FinalResult():
-    f = open('/home/g0401828t/navigation_result/arrow_log.txt', 'r')
+    f = open('/home/kwon/navigation_result/arrow_log.txt', 'r')
     while True:
         line = f.readline()
         if not line: break

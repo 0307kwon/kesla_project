@@ -62,7 +62,7 @@ void modeCallback(const std_msgs::String::ConstPtr& msg, Gradient* left, Gradien
 int main(int argc, char** argv){
 
 
-  int duration = 3;
+  int duration = 7;
 
   Gradient left;
   left.angular = 0;
@@ -101,7 +101,7 @@ int main(int argc, char** argv){
       if(left.is_vaild && right.is_vaild){
         //두쪽다 보일때//
         beforeTime = ros::Time::now();
-        msg.linear.x = 0.05;
+        msg.linear.x = 0.10;
         msg.linear.y = 0;
         msg.linear.z = 0;
         msg.angular.x = 0;
@@ -111,42 +111,51 @@ int main(int argc, char** argv){
         //오른쪽만 보일때 - 좌회전 //
         beforeTime = ros::Time::now();
         if(right.angular <-35){
-          msg.linear.x = 0.05;
+          msg.linear.x = 0.09;
           msg.linear.y = 0;
           msg.linear.z = 0;
           msg.angular.x = 0;
           msg.angular.y = 0;
-          msg.angular.z = (320-right.x)*0.1/160.0;
+          msg.angular.z = (320-right.x)*1.5*0.1/160.0;
         }else{
-          //n_temp = 0;
-          msg.linear.x = 0.05;
+          //pub.publish(msg);
+          ros::Duration(3).sleep();
+          msg.linear.x = 0.06;
           msg.linear.y = 0;
           msg.linear.z = 0;
           msg.angular.x = 0;
           msg.angular.y = 0;
-          msg.angular.z = -1.0/right.angular+10.0/abs(160-right.x);
+          //msg.angular.z = -1.0/left.angular-8.0/abs(160-left.x);
+          msg.angular.z = 0.5;
+          pub.publish(msg);
+          ros::Duration(2.5).sleep();
         }
       }else if(left.is_vaild == true && right.is_vaild == false){
-        //왼쪽만 보일때
+        //왼쪽만 보일때(우회전)//
         beforeTime = ros::Time::now();
         if(left.angular > 35){
-          msg.linear.x = 0.05;
+          msg.linear.x = 0.09;
           msg.linear.y = 0;
           msg.linear.z = 0;
           msg.angular.x = 0;
           msg.angular.y = 0;
-          msg.angular.z = -(left.x)*0.1/160.0;
+          msg.angular.z = -(left.x*1.5)*0.1/160.0;
         }else{
           //n_temp = 0;
-          msg.linear.x = 0.05;
+          //pub.publish(msg);
+          ros::Duration(3).sleep();
+          msg.linear.x = 0.06;
           msg.linear.y = 0;
           msg.linear.z = 0;
           msg.angular.x = 0;
           msg.angular.y = 0;
-          msg.angular.z = -1.0/left.angular-10.0/abs(160-left.x);
+          //msg.angular.z = -1.0/left.angular-8.0/abs(160-left.x);
+          msg.angular.z = -0.5;
+          pub.publish(msg);
+          ros::Duration(2.5).sleep();
         }
       }else if(left.is_vaild == false && right.is_vaild == false){
-          msg.linear.x = 0;
+          msg.linear.x = 0.5;
           msg.linear.y = 0;
           msg.linear.z = 0;
           msg.angular.x = 0;
@@ -155,6 +164,7 @@ int main(int argc, char** argv){
 
           if(ros::Time::now() - beforeTime > ros::Duration(duration)){
             //서비스
+            msg.linear.x = 0;
             lineFin.request.myRequest = "exploration";
             clientLine.call(lineFin);
           }

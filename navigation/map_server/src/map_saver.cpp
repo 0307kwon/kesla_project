@@ -124,7 +124,6 @@ free_thresh: 0.196
 
       ROS_INFO("Done\n");
       saved_map_ = true;
-      ros::Duration(2).sleep();
       clientMap.call(req_map);
     }
 
