@@ -31,6 +31,7 @@ bool node_controller::modeCallback(kesla_msg::DoneService::Request &req, kesla_m
       node_admin.init();
       node_admin.roslaunch("turtlebot3_slam","turtlebot3_slam.launch","slam_methods:=frontier_exploration");
       node_admin.roslaunch("exploration_save","exploration_save.launch");
+      node_admin.roslaunch("person_filtering","person_filtering.launch");
       //node_admin.roslaunch("camera_to_world","camera.launch");
     }else if(mode == MODE_MAP_SAVE){
       node_admin.roslaunch("map_server", "map_saver.launch");

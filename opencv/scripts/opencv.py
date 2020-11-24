@@ -11,7 +11,6 @@ from std_msgs.msg import String
 
 gleft_avg = "61.99082329198616"
 gright_avg = "-55.00797980144134"
-
 gleft_x = "49"
 gright_x = "305"
 
@@ -189,6 +188,7 @@ class Gray():
 
 
     def main(self):
+	global gleft_avg,gleft_x,gright_avg,gright_x
 	pub = rospy.Publisher('/kesla/gradient',String,queue_size=10)
 	rate = rospy.Rate(20)#20hz
 	while not rospy.is_shutdown():
