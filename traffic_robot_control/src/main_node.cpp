@@ -119,6 +119,7 @@ int main(int argc, char** argv){
           msg.angular.z = (320-right.x)*0.1/160.0;
         }else{
           //n_temp = 0;
+          //급발진//
           msg.linear.x = 0.05;
           msg.linear.y = 0;
           msg.linear.z = 0;
@@ -127,10 +128,10 @@ int main(int argc, char** argv){
           msg.angular.z = -1.0/right.angular+10.0/abs(160-right.x);
         }
       }else if(left.is_vaild == true && right.is_vaild == false){
-        //왼쪽만 보일때
+        //왼쪽만 보일때(우회전)//
         beforeTime = ros::Time::now();
-        if(left.angular > 35){
-          msg.linear.x = 0.05;
+        if(left.angular > 35){ //35
+          msg.linear.x = 0.07;
           msg.linear.y = 0;
           msg.linear.z = 0;
           msg.angular.x = 0;

@@ -12,8 +12,8 @@
         #All standard costmap_2d parameters as in move_base, other than BoundedExploreLayer
         <rosparam ns="explore_costmap" subst_value="true">
             #Sample parameters
-            footprint: [[-0.1, -0.1], [-0.1, 0.1], [0.1, 0.1], [0.1, -0.1]]
-            robot_radius: 0.1
+            footprint: [[-0.01, -0.01], [-0.01, 0.01], [0.01, 0.01], [0.01, -0.01]]
+            robot_radius: 0.01
 
             transform_tolerance: 0.5
             update_frequency: 5.0
@@ -41,7 +41,7 @@
                 laser: {data_type: LaserScan, clearing: true, marking: true, topic: scan, inf_is_valid: true, raytrace_range: $(arg sensor_range), obstacle_range: $(arg sensor_range)}
 
             inflation:
-                inflation_radius: 0
+                inflation_radius: 0.10
       </rosparam>
     </node>
 </launch>
