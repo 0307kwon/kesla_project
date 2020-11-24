@@ -38,7 +38,7 @@ void modeCallback(const std_msgs::String::ConstPtr& msg, Gradient* left, Gradien
   const char* temp = msg->data.c_str();
   vector<string> gradient = split(msg->data, ',');
 
-  //std::cout << "traffic_robot_control 동작중 : " << gradient[0] << "| " << gradient[1] << std::endl;
+  std::cout << "traffic_robot_control 동작중 : " << gradient[0] << "| " << gradient[2] << std::endl;
   if(gradient[0].compare("empty") == 0){
     left->angular = 0;
     left->is_vaild = false;
@@ -98,182 +98,18 @@ int main(int argc, char** argv){
   }
 
   while(nh.ok()){
-
-    /*
-    if(left.is_vaild && right.is_vaild){
-
-      //두쪽다 보일때//
-
-      msg.linear.x = SPD+0.08;
-
-      msg.linear.y = 0;
-
-      msg.linear.z = 0;
-
-      msg.angular.x = 0;
-
-      msg.angular.y = 0;
-
-      msg.angular.z = 0;
-
-
-
-
-
-    }else if(left.is_vaild == false && right.is_vaild == true){
-
-      //오른쪽만 보일때 - 좌회전 //
-
-      if(right.angular <-35){
-
-        msg.linear.x = 0.05;
-
-        msg.linear.y = 0;
-
-        msg.linear.z = 0;
-
-        msg.angular.x = 0;
-
-        msg.angular.y = 0;
-
-        msg.angular.z = (320-right.x)*0.1/160.0;
-
-      }else{
-
-        //n_temp = 0;
-
-        msg.linear.x = 0.05;
-
-        msg.linear.y = 0;
-
-        msg.linear.z = 0;
-
-        msg.angular.x = 0;
-
-        msg.angular.y = 0;
-
-        msg.angular.z = -0.03*abs(right.angular+25)+0.3;//0.05*right.angular+1.75;
-
-      }
-
-
-
-    }else if(left.is_vaild == true && right.is_vaild == false){
-
-
-
-      if(left.angular > 35){
-
-        msg.linear.x = 0.05;
-
-        msg.linear.y = 0;
-
-        msg.linear.z = 0;
-
-        msg.angular.x = 0;
-
-        msg.angular.y = 0;
-
-        msg.angular.z = -(left.x)*0.1/160.0;
-
-      }else{
-
-        //n_temp = 0;
-
-        msg.linear.x = 0.05;
-
-        msg.linear.y = 0;
-
-        msg.linear.z = 0;
-
-        msg.angular.x = 0;
-
-        msg.angular.y = 0;
-
-        msg.angular.z = 0.03*abs(left.angular-25)-0.3;
-
-      }
-
-    }
-
-*/
-
-  if(left.is_vaild && right.is_vaild){
-    //두쪽다 보일때//
-    beforeTime = ros::Time::now();
-    msg.linear.x = 0.05;
-    msg.linear.y = 0;
-    msg.linear.z = 0;
-    msg.angular.x = 0;
-    msg.angular.y = 0;
-    msg.angular.z = 0;
-  }else if(left.is_vaild == false && right.is_vaild == true){
-    //오른쪽만 보일때 - 좌회전 //
-    beforeTime = ros::Time::now();
-    if(right.angular <-35){
-      msg.linear.x = 0.05;
-      msg.linear.y = 0;
-      msg.linear.z = 0;
-      msg.angular.x = 0;
-      msg.angular.y = 0;
-      msg.angular.z = (320-right.x)*0.1/160.0;
-    }else{
-      //n_temp = 0;
-      msg.linear.x = 0.05;
-      msg.linear.y = 0;
-      msg.linear.z = 0;
-      msg.angular.x = 0;
-      msg.angular.y = 0;
-      msg.angular.z = -1.0/right.angular+10.0/abs(160-right.x);
-    }
-  }else if(left.is_vaild == true && right.is_vaild == false){
-    //왼쪽만 보일때
-    beforeTime = ros::Time::now();
-    if(left.angular > 35){
-      msg.linear.x = 0.05;
-      msg.linear.y = 0;
-      msg.linear.z = 0;
-      msg.angular.x = 0;
-      msg.angular.y = 0;
-      msg.angular.z = -(left.x)*0.1/160.0;
-    }else{
-      //n_temp = 0;
-      msg.linear.x = 0.05;
-      msg.linear.y = 0;
-      msg.linear.z = 0;
-      msg.angular.x = 0;
-      msg.angular.y = 0;
-      msg.angular.z = -1.0/left.angular-10.0/abs(160-left.x);
-    }
-  }else if(left.is_vaild == false && right.is_vaild == false){
-      msg.linear.x = 0;
-      msg.linear.y = 0;
-      msg.linear.z = 0;
-      msg.angular.x = 0;
-      msg.angular.y = 0;
-      msg.angular.z = 0;
-
-      if(ros::Time::now() - beforeTime > ros::Duration(duration)){
-        //서비스
-        lineFin.request.myRequest = "exploration";
-        clientLine.call(lineFin);
-      }
-    }
-  }
-
-      /*
       if(left.is_vaild && right.is_vaild){
         //두쪽다 보일때//
-        msg.linear.x = SPD+0.08;
+        beforeTime = ros::Time::now();
+        msg.linear.x = 0.05;
         msg.linear.y = 0;
         msg.linear.z = 0;
         msg.angular.x = 0;
         msg.angular.y = 0;
         msg.angular.z = 0;
-
-
       }else if(left.is_vaild == false && right.is_vaild == true){
         //오른쪽만 보일때 - 좌회전 //
+        beforeTime = ros::Time::now();
         if(right.angular <-35){
           msg.linear.x = 0.05;
           msg.linear.y = 0;
@@ -288,11 +124,11 @@ int main(int argc, char** argv){
           msg.linear.z = 0;
           msg.angular.x = 0;
           msg.angular.y = 0;
-          msg.angular.z = -0.03*abs(right.angular+25)+0.3;//0.05*right.angular+1.75;
+          msg.angular.z = -1.0/right.angular+10.0/abs(160-right.x);
         }
-
       }else if(left.is_vaild == true && right.is_vaild == false){
-
+        //왼쪽만 보일때
+        beforeTime = ros::Time::now();
         if(left.angular > 35){
           msg.linear.x = 0.05;
           msg.linear.y = 0;
@@ -307,18 +143,29 @@ int main(int argc, char** argv){
           msg.linear.z = 0;
           msg.angular.x = 0;
           msg.angular.y = 0;
-          msg.angular.z = 0.03*abs(right.angular+25)-0.3;
+          msg.angular.z = -1.0/left.angular-10.0/abs(160-left.x);
         }
+      }else if(left.is_vaild == false && right.is_vaild == false){
+          msg.linear.x = 0;
+          msg.linear.y = 0;
+          msg.linear.z = 0;
+          msg.angular.x = 0;
+          msg.angular.y = 0;
+          msg.angular.z = 0;
+
+          if(ros::Time::now() - beforeTime > ros::Duration(duration)){
+            //서비스
+            lineFin.request.myRequest = "exploration";
+            clientLine.call(lineFin);
+          }
       }
-      */
-
-
-    pub.publish(msg);
-
-    std::cout << "traffic_robot_control 동작중 : " << left.is_vaild<< "| " << right.is_vaild << "| " << right.angular << std::endl;
-    cout << "속도 : " << msg.linear.x << " 각속도 : " << msg.angular.z << endl;
-    cout << "left_x : " << left.x << " right_x : " << right.x << endl;
-
-    ros::spinOnce();
-    rate.sleep();
-  }
+      pub.publish(msg);
+/*
+      std::cout << "traffic_robot_control 동작중 : " << left.is_vaild<< "| " << right.is_vaild << "| " << right.angular << std::endl;
+      cout << "속도 : " << msg.linear.x << " 각속도 : " << msg.angular.z << endl;
+      cout << "left_x : " << left.x << " right_x : " << right.x << endl;
+*/
+      ros::spinOnce();
+      rate.sleep();
+    }
+}
