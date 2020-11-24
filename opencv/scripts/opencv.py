@@ -9,11 +9,11 @@ import math
 
 from std_msgs.msg import String
 
-gleft_avg = ""
-gright_avg = ""
+gleft_avg = "61.99082329198616"
+gright_avg = "-55.00797980144134"
 
-gleft_x = ""
-gright_x = ""
+gleft_x = "49"
+gright_x = "305"
 
 class Gray():
     def __init__(self):
@@ -108,7 +108,7 @@ class Gray():
 	right = np.array([])
 	#print("=================start======================")
 
-	if len(lines) != 0:
+	if lines is not None:
         	temp_lx = 0
         	temp_rx = 320
 		for i in lines:
