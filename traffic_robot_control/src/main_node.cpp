@@ -252,7 +252,7 @@ int main(int argc, char** argv){
       msg.angular.x = 0;
       msg.angular.y = 0;
       msg.angular.z = 0;
-      
+
       if(ros::Time::now() - beforeTime > ros::Duration(duration)){
         //서비스
         lineFin.request.myRequest = "exploration";
