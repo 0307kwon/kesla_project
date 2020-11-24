@@ -11,7 +11,7 @@ from pyquaternion import Quaternion
 np.set_printoptions(suppress=True)
 
 
-img = cv2.imread('/home/g0401828t/navigation_result/savemap.pgm',cv2.IMREAD_GRAYSCALE)
+img = cv2.imread('/home/g0401828t/navigation_result/savemap1.pgm',cv2.IMREAD_GRAYSCALE)
 img = cv2.cvtColor(img, cv2.COLOR_GRAY2RGB)
 
 green_color = (0, 0, 255)
@@ -25,7 +25,7 @@ def totuple(a):
 def DrawArrow(quaternion, origin):
     global img
     global green_color
-    v = (30, 0, 0)              # initial vector   =====================>
+    v = (20, 0, 0)              # initial vector   =====================>
     v = np.array(v)    
     quatReceived = quaternion   # quaternion   =========================>
     quat1 = Quaternion(quatReceived)
@@ -39,8 +39,8 @@ def DrawArrow(quaternion, origin):
     arrowStart = totuple(map(int,arrowStart))
 
 
-    arrowStart = (arrowStart[0]+400,arrowStart[1]*-1+400)
-    arrowEnd = (arrowEnd[0]+400, arrowEnd[1]*-1+400)
+    arrowStart = (arrowStart[0]+int(2/0.02),-(arrowStart[1]+int(3/0.02)-233))
+    arrowEnd = (arrowEnd[0]+int(2/0.02), -(arrowEnd[1]+int(3/0.02)-233))
 
     cv2.arrowedLine(img, arrowStart, arrowEnd, green_color, thickness=1)
 
@@ -50,14 +50,13 @@ def FinalResult():
         line = f.readline()
         if not line: break
 
-        origin = (float(line.split(" ")[0]),)
-        origin = origin + (float(line.split(" ")[1]),)
+        origin = (float(line.split(" ")[0])/0.02,)
+        origin = origin + (float(line.split(" ")[1])/0.02,)
 
         quaternion = (float(line.split(" ")[5]),)
         quaternion = quaternion + (float(line.split(" ")[2]),)
         quaternion = quaternion + (float(line.split(" ")[3]),)
         quaternion = quaternion + (float(line.split(" ")[4]),)
-	print(quaternion)
 
         DrawArrow(quaternion, origin)
     f.close()
