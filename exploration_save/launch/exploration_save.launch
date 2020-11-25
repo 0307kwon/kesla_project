@@ -1,0 +1,11 @@
+<launch>
+
+
+  <node pkg="exploration_save" name="exploration_save" type="exploration_save" output="screen">
+    <param name="txtSave_path" type="string" value="/home/$(env USER)/navigation_result"/>
+  </node>
+  <!--
+  <include file="$(find node_controller)/launch/node_controller.launch">
+  </include>
+-->
+</launch>

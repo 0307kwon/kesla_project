@@ -1,0 +1,115 @@
+--------------------------------------------------------------------------------
+-------turtlebot3_navigation/param/dwa_local_planner_params_burger.yaml---------
+
+DWAPlannerROS:
+
+# Robot Configuration Parameters
+  max_vel_x: 0.11
+  min_vel_x: -0.11
+
+  max_vel_y: 0.0
+  min_vel_y: 0.0
+
+# The velocity when robot is moving in a straight line
+  max_trans_vel:  0.11
+  min_trans_vel:  0.11
+
+  max_rot_vel: 2.75
+  min_rot_vel: 1.37
+
+  acc_lim_x: 2.5
+  acc_lim_y: 0.0
+  acc_lim_theta: 10.0 #3.2
+
+# Goal Tolerance Parametes
+  xy_goal_tolerance: 0.10 #0.05
+  yaw_goal_tolerance: 0.17
+  latch_xy_goal_tolerance: false
+
+# Forward Simulation Parameters
+  sim_time: 2.0 #2.0 #5.0#2.0
+  vx_samples: 20
+  vy_samples: 0
+  vth_samples: 40
+  controller_frequency: 5.0
+
+# Trajectory Scoring Parameters
+  path_distance_bias: 0.8 #50.0 #32.0 #0.8
+  goal_distance_bias: 0.8 #0.6
+  occdist_scale: 256 #50.0 #0.02
+  forward_point_distance: 0.01 #0.05 #0.325
+  stop_time_buffer: 0.2
+  scaling_speed: 0.25
+  max_scaling_factor: 0.2
+
+# Oscillation Prevention Parameters
+  oscillation_reset_dist: 0.04 #0.05
+
+# Debugging
+  publish_traj_pc : true
+  publish_cost_grid_pc: true
+--------------------------------------------------------------------------------
+---------turtlebot3_navigation/param/costmap_common_params_burger.yaml----------
+
+obstacle_range: 3.0
+raytrace_range: 3.5
+
+footprint: [[-0.001, -0.001], [-0.001, 0.001], [0.001, 0.001], [0.001, -0.001]]
+robot_radius: 0.001
+
+inflation_radius: 0.08 #0.05
+cost_scaling_factor: 0.1 #0.5(낮은 해상도)
+
+map_type: costmap
+observation_sources: scan
+scan: {sensor_frame: base_scan, data_type: LaserScan, topic: scan, marking: true, clearing: true}
+--------------------------------------------------------------------------------
+--------kesla_project/frontier_exploration/launch/no_global_map.launch----------
+<launch>
+    <!-- Set to your sensor's range -->
+    <arg name="sensor_range" default="1.0"/>
+
+    <node pkg="frontier_exploration" type="explore_client" name="explore_client" output="screen"/>
+
+    <node pkg="frontier_exploration" type="explore_server" name="explore_server" output="screen" >
+
+        <param name="frequency" type="double" value="2.0"/>
+        <param name="goal_aliasing" type="double" value="$(arg sensor_range)"/>
+
+        #All standard costmap_2d parameters as in move_base, other than BoundedExploreLayer
+        <rosparam ns="explore_costmap" subst_value="true">
+            #Sample parameters
+            footprint: [[-0.001, -0.001], [-0.001, 0.001], [0.001, 0.001], [0.001, -0.001]]
+            robot_radius: 0.001
+
+            transform_tolerance: 0.5
+            update_frequency: 5.0
+            publish_frequency: 5.0
+
+            global_frame: map
+            robot_base_frame: base_link
+            resolution: 0.01
+
+            rolling_window: false
+            track_unknown_space: true
+
+            plugins:
+
+                - {name: explore_boundary, type: "frontier_exploration::BoundedExploreLayer"}
+                - {name: sensor,           type: "costmap_2d::ObstacleLayer"}
+                - {name: inflation,        type: "costmap_2d::InflationLayer"}
+
+            explore_boundary:
+                resize_to_boundary: true
+                frontier_travel_point: closest
+
+            sensor:
+                observation_sources: laser
+                laser: {data_type: LaserScan, clearing: true, marking: true, topic: scan, inf_is_valid: true, raytrace_range: $(arg sensor_range), obstacle_range: $(arg sensor_range)}
+
+            inflation:
+                inflation_radius: 0.08
+      </rosparam>
+    </node>
+</launch>
+--------------------------------------------------------------------------------

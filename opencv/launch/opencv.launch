@@ -1,0 +1,9 @@
+<launch>
+
+
+  <node pkg="opencv" name="opencv" type="opencv.py" output="screen">
+
+  </node>
+
+
+</launch>

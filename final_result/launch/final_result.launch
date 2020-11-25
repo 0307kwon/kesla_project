@@ -1,0 +1,9 @@
+<launch>
+
+
+  <node pkg="final_result" name="final_result" type="final_result.py" output="screen">
+
+  </node>
+
+
+</launch>
