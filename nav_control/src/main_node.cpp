@@ -61,7 +61,6 @@ void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
     initPose_msg.pose.pose.orientation.y = msg->pose.pose.orientation.y;
     initPose_msg.pose.pose.orientation.z = msg->pose.pose.orientation.z;
     initPose_msg.pose.pose.orientation.w = msg->pose.pose.orientation.w;
-    isFirst = 1;
   }
 }
 

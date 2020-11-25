@@ -104,7 +104,7 @@ void odomCallback(const nav_msgs::Odometry::ConstPtr& msg){
 }
 
 void personCallback(const std_msgs::String::ConstPtr& msg){
-  if(ros::Time::now() - arrow_beforeTime > ros::Duration(0.5)){
+  if(ros::Time::now() - arrow_beforeTime > ros::Duration(1)){
     arrow_beforeTime = ros::Time::now();
     arrowLogFile << turtle_pose.pose.pose.position.x << " " << turtle_pose.pose.pose.position.y <<
     " "<< turtle_pose.pose.pose.orientation.x << " " << turtle_pose.pose.pose.orientation.y << " " << turtle_pose.pose.pose.orientation.z << " " << turtle_pose.pose.pose.orientation.w << endl;

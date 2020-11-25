@@ -101,7 +101,7 @@ int main(int argc, char** argv){
       if(left.is_vaild && right.is_vaild){
         //두쪽다 보일때//
         beforeTime = ros::Time::now();
-        msg.linear.x = 0.10;
+        msg.linear.x = 0.05;
         msg.linear.y = 0;
         msg.linear.z = 0;
         msg.angular.x = 0;
