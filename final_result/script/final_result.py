@@ -25,7 +25,7 @@ def totuple(a):
 def DrawArrow(quaternion, origin):
     global img
     global green_color
-    v = (20, 0, 0)              # initial vector   =====================>
+    v = (5, 0, 0)              # initial vector   =====================>
     v = np.array(v)
     quatReceived = quaternion   # quaternion   =========================>
     quat1 = Quaternion(quatReceived)

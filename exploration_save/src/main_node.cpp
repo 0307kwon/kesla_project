@@ -21,7 +21,9 @@ bool isFirst = false;
 string txtSave_path_;
 nav_msgs::Odometry turtle_pose;
 ofstream arrowLogFile;
-
+ros::Time arrow_beforeTime;
+tf::StampedTransform transform_;
+stringstream save_ss;
 //ros::ServiceClient clientMode = n.serviceClient<kesla_msg::DoneService>("explore_server/sendNav");
 //
 
@@ -38,6 +40,14 @@ bool srv_callback(kesla_msg::DoneService::Request &req,
   if(!req.myRequest.compare("finished")){
     ROS_ERROR("exploration finished");
     //clientMode.call(req);
+    //odom -> map 보정값 저장
+    save_ss << "correction value(x,y) " << transform_.getOrigin().x() << " " << transform_.getOrigin().y() << endl;
+    //텍스트 파일 저장//
+    ofstream outFile((txtSave_path_+"/kesla_log.txt").c_str());
+    if(outFile.is_open()){
+      outFile << save_ss.str();
+      outFile.close();
+    }
     //다음 모드로 이동//
     arrowLogFile.close();
     kesla_msg::DoneService req_explor;
@@ -90,23 +100,19 @@ void odomCallback(const nav_msgs::Odometry::ConstPtr& msg){
   turtle_pose.pose.pose.orientation.w = msg->pose.pose.orientation.w;
 
   if(!isFirst){
-    stringstream save_ss;
     save_ss << "start_position "<< turtle_pose.pose.pose.position.x << " " << turtle_pose.pose.pose.position.y << std::endl;
     save_ss << "start_quaternion " << turtle_pose.pose.pose.orientation.x << " " << turtle_pose.pose.pose.orientation.y << " "
                               << turtle_pose.pose.pose.orientation.z << " " << turtle_pose.pose.pose.orientation.w << " "<< std::endl;
-    //텍스트 파일 저장//
-    ofstream outFile((txtSave_path_+"/kesla_log.txt").c_str());
-    if(outFile.is_open()){
-      outFile << save_ss.str();
-      outFile.close();
-    }
     isFirst = true;
   }
 }
 
 void personCallback(const std_msgs::String::ConstPtr& msg){
-    arrowLogFile << turtle_pose.pose.pose.position.x << " " << turtle_pose.pose.pose.position.y <<
+  if(ros::Time::now() - arrow_beforeTime > ros::Duration(1)){
+    arrow_beforeTime = ros::Time::now();
+      arrowLogFile << turtle_pose.pose.pose.position.x << " " << turtle_pose.pose.pose.position.y <<
     " "<< turtle_pose.pose.pose.orientation.x << " " << turtle_pose.pose.pose.orientation.y << " " << turtle_pose.pose.pose.orientation.z << " " << turtle_pose.pose.pose.orientation.w << endl;
+  }
 }
 
 
@@ -141,8 +147,18 @@ int main(int argc, char** argv){
 
   while(beforeTime == ros::Time(0)){ // 확실한 beforeTime을 받아오기 위해
     beforeTime = ros::Time::now();
+    arrow_beforeTime = ros::Time::now();
   }
   while(n.ok()){
+    try
+    {
+      listener.lookupTransform("/map", "odom",
+                            ros::Time(0), transform_);
+    }catch (tf::TransformException ex){
+      ROS_WARN("%s",ex.what());
+      ros::Duration(1.0).sleep();
+      continue;
+    }
     if(ros::Time::now() - beforeTime > ros::Duration(5)){ // 5초마다 동작중임을 알림
       cout << "exploration_save 동작중" << endl;
       beforeTime = ros::Time::now();

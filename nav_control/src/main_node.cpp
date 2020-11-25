@@ -11,6 +11,10 @@ using namespace std;
 
 string txtSave_path_;
 int isFirst = 0;
+double correction_x;
+double correction_y;
+
+
 geometry_msgs::PoseWithCovarianceStamped initPose_msg;
 move_base_msgs::MoveBaseActionGoal goal_msg;
 void readLogfile(){
@@ -25,14 +29,22 @@ void readLogfile(){
   goal_msg.header.stamp = ros::Time::now();
   goal_msg.goal.target_pose.header.stamp = ros::Time::now();
   goal_msg.goal.target_pose.header.frame_id = "map";
-  cin >> goal_msg.goal.target_pose.pose.position.x;
-  cin >> goal_msg.goal.target_pose.pose.position.y;
+
+  cin >> t;
+  goal_msg.goal.target_pose.pose.position.x = std::stod(t)-correction_x;
+  cin >> t;
+  goal_msg.goal.target_pose.pose.position.y = std::stod(t)-correction_y;
   goal_msg.goal.target_pose.pose.position.z = 0;
   cin >> t;
   cin >> goal_msg.goal.target_pose.pose.orientation.x;
   cin >> goal_msg.goal.target_pose.pose.orientation.y;
   cin >> goal_msg.goal.target_pose.pose.orientation.z;
   cin >> goal_msg.goal.target_pose.pose.orientation.w;
+
+  cin >> t;
+  cin >> correction_x;
+  cin >> correction_y;
+
 /*
   cin >> t;
   cout << t << endl;
@@ -54,13 +66,14 @@ void msgCallback(const nav_msgs::Odometry::ConstPtr& msg){
   if(isFirst == 0){
     initPose_msg.header.stamp = ros::Time::now();
     initPose_msg.header.frame_id = "map";
-    initPose_msg.pose.pose.position.x = msg->pose.pose.position.x;
-    initPose_msg.pose.pose.position.y = msg->pose.pose.position.y;
+    initPose_msg.pose.pose.position.x = msg->pose.pose.position.x-correction_x;
+    initPose_msg.pose.pose.position.y = msg->pose.pose.position.y-correction_y;
     initPose_msg.pose.pose.position.z = 0;
     initPose_msg.pose.pose.orientation.x = msg->pose.pose.orientation.x;
     initPose_msg.pose.pose.orientation.y = msg->pose.pose.orientation.y;
     initPose_msg.pose.pose.orientation.z = msg->pose.pose.orientation.z;
     initPose_msg.pose.pose.orientation.w = msg->pose.pose.orientation.w;
+
     isFirst = 1;
   }
 }
@@ -92,6 +105,7 @@ int main(int argc, char** argv){
 
   readLogfile();
   while(n.ok()){
+    cout << initPose_msg.pose.pose.position.x << ", " << initPose_msg.pose.pose.position.y << endl;
     if(isFirst == 1){
       ros::Duration(3).sleep();
       cout << "send initial pose" << endl;
