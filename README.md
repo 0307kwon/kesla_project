@@ -234,20 +234,36 @@
 # 6. 진행 상황
 
 ### 2020-11-08) 건물의 방을 모두 exploration
-       
-<img src="image04.gif" width=500px>
+
+<details>
+ <summary> </summary>
+ <img src="image04.gif" width=500px>
+</details>
+
 
 ### 2020-11-13) lane tracking 실제 테스트
 
-<img src="image06.gif" width=500px>
+<details>
+ <summary> </summary>
+ <img src="image06.gif" width=500px>
+</details>
+
 
 ### 2020-11-16) frontier exploration parameter를 수정하여 좀 더 부드러운 탐색을 구현
-       
+ 
+<details>
+<summary> </summary>
 <img src="image05.gif" width=500px>
+</details>
+
 
 ### 2020-11-27) 최종 결과
 
+<details>
+<summary> </summary>
 <img src="image07.gif" width=500px>
+</details>
+
 
 
 
