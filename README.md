@@ -63,6 +63,9 @@
 
 
 # 3. 하드웨어 setting
+
+<img src="./hardware_image.jpg" width=350px>  
+
 * 로봇 : turtlebot3 burger
 
 
