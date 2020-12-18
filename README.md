@@ -3,8 +3,6 @@
 
 [2020.11.27] KNU 코드페어 2회 입상
 
-<img src="./readme-images/reward.jpg" width=300px>
-
 ## Team. kesla
 ◎ AI
 
@@ -267,6 +265,8 @@
 <details>
 <summary> </summary>
 <img src="./readme-images/image07.gif" width=500px>
+ <p> KNU 코드페어 2회 입상 </p> 
+<img src="./readme-images/award.jpg" width=300px>
 </details>
 
 
