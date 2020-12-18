@@ -266,7 +266,7 @@
 <summary> </summary>
 <img src="./readme-images/image07.gif" width=500px>
  <p> KNU 코드페어 2회 입상 </p> 
-<img src="./readme-images/award.jpg" width=300px>
+<img src="./readme-images/award2.jpg" width=300px>
 </details>
 
 
