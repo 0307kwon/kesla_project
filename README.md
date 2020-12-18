@@ -1,7 +1,9 @@
 # kesla_project ( 지속 업데이트 중입니다. )
 [2020.03~] 졸업프로젝트 - 붕괴 위기가 있는 건물에서의 조난자 탐색 로봇
 
-[2020.11.27] KNU 코드페어 2회 출품작
+[2020.11.27] KNU 코드페어 2회 입상
+
+<img src="./readme-images/reward.jpg" width=300px>
 
 ## Team. kesla
 ◎ AI
@@ -32,7 +34,7 @@
 
 # 1. summary
 
-<img src="./image07.gif" width=500px><img src="./image05.gif" width=500px>
+<img src="./readme-images/image07.gif" width=500px><img src="./readme-images/image05.gif" width=500px>
 
 
 붕괴 위기가 있는 건물에서 사람이 직접 들어가는 것은 위험부담이 매우 크다.
@@ -64,7 +66,7 @@
 
 # 3. 하드웨어 setting
 
-<img src="./hardware_image.jpg" width=350px>  
+<img src="./readme-images/hardware_image.jpg" width=350px>  
 
 * 로봇 : turtlebot3 burger
 
@@ -84,7 +86,7 @@
   
 # 4. Code 구조 
 현재 필요한 mode를 받아와 해당 mode에 맞는 프로그램(Ros 패키지)을 실행시킵니다.
-<img src="./image01.png" width=800px>  
+<img src="./readme-images/image01.png" width=800px>  
 
 
 ## mode에 해당하는 ros 실행 패키지들 ( 계속 업데이트 됩니다. )
@@ -129,7 +131,7 @@
  
   </details>
   
-  <img src="./image02.png" width=800px>
+  <img src="./readme-images/image02.png" width=800px>
     
 * MODE_EXPLORATION : 건물 탐색 모드
 
@@ -172,7 +174,7 @@
      
   </details>
   
-  <img src="./image03.png" width=800px>
+  <img src="./readme-images/image03.png" width=800px>
   
 * MODE_MAP_SAVE : 건물 탐색이 모두 끝나고 생성된 맵을 savemap.yaml 파일로 저장하는 모드입니다.
 
@@ -184,7 +186,7 @@
    
   </details>
   
-  <img src="./image04.png" width=800px>
+  <img src="./readme-images/image04.png" width=800px>
   
 * MODE_NAVIGATION : 건물 탈출 모드
 
@@ -208,7 +210,7 @@
  
   </details>
   
-  <img src="./image05.png" width=800px>
+  <img src="./readme-images/image05.png" width=800px>
 
  
 # 5. Code 
@@ -240,7 +242,7 @@
 
 <details>
  <summary> </summary>
- <img src="image04.gif" width=500px>
+ <img src="./readme-images/image04.gif" width=500px>
 </details>
 
 
@@ -248,7 +250,7 @@
 
 <details>
  <summary> </summary>
- <img src="image06.gif" width=500px>
+ <img src="./readme-images/image06.gif" width=500px>
 </details>
 
 
@@ -256,7 +258,7 @@
  
 <details>
 <summary> </summary>
-<img src="image05.gif" width=500px>
+<img src="./readme-images/image05.gif" width=500px>
 </details>
 
 
@@ -264,7 +266,7 @@
 
 <details>
 <summary> </summary>
-<img src="image07.gif" width=500px>
+<img src="./readme-images/image07.gif" width=500px>
 </details>
 
 
